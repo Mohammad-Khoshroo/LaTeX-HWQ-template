@@ -1,0 +1,48 @@
+\documentclass[12pt,largemargins]{homework}
+
+\usepackage{tikz}
+\usepackage{graphicx}
+\usetikzlibrary{automata, positioning, arrows.meta, calc, fit}
+
+\newcommand{\eventclass}{نظریه زبان‌ها و ماشین‌ها}
+\newcommand{\eventsemester}{بهار ۱۴۰۵}
+\newcommand{\eventtype}{تمرین شماره}
+
+\newcommand{\eventnum}{2}
+\newcommand{\eventcntrbs}{محمد خوشرو}
+\newcommand{\hwemail}{mvrkhoshroo83@ut.ac.ir}
+
+\newcommand{\eventdatetype}{آخرین مهلت تحویل:}
+\newcommand{\eventDeadlineDay}{8}
+\newcommand{\eventDeadlineMonth}{اردیبهشت}
+\newcommand{\eventDeadlineYear}{1405}
+
+\newboolean{compileanswers}
+
+% Commente lines to compile the pdf without answers
+% \setboolean{compileanswers}{true}
+
+
+\begin{document}
+\makeheader
+\subfile{Q-A/Q0.tex}
+\clearpage
+\subfile{Q-A/Q1-2.tex}
+\clearpage
+\subfile{Q-A/Q2-2.tex}
+\clearpage
+\subfile{Q-A/Q3-2.tex}
+\clearpage
+\subfile{Q-A/Q4-2.tex}
+\clearpage
+\subfile{Q-A/Q5-2.tex}
+\clearpage
+% \subfile{Q-A/Q6-2.tex}
+\end{document}
+
+
+% Open the HW directory to compile
+% To compile on Windows (without auxiliary files):
+% latexmk -xelatex event.tex ; latexmk -c event.tex
+% Otherwise:
+% xelatex event.tex 

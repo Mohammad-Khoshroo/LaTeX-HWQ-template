@@ -1,0 +1,450 @@
+\documentclass[12pt,largemargins]{homework}
+
+
+\begin{document}
+
+\question#{20}
+
+
+احتمالاَ با \lr{FSM(Finite State Machines)}ها در درس مدار منطقی آشنا شده‌اید. به این نوع از اتوماتا‌ها \lr{FST(Finite State Transducer)} می‌گویند چرا که بسته به \lr{State}ای که درآن قرار دارند خروجی ای متناسب تولید می‌کنند. در ادامه نمونه‌ای از این \lr{FSM}ها را خواهید دید که مربوط به یک دنباله‌یاب \lr{101} با همپوشانی‌است، به این معنی که اگر درطول رشته‌ی ورودی تعدادی زیررشته \lr{101} وجود داشت به ازای هرکدام یکبار خروجی یک می‌شود.. دنباله‌یاب‌های سریال تک بیت \lr{(Sequence Detectors)} ساده‌ترین نوع \lr{FST}ها هستند که می‌توان آنها را با \lr{DFA} ها مدل کرد. (به این صورت که \lr{state}هایی که درآن‌ها ماشین، خروجی $\text{\lr{1}}$ تولید می‌کند را \lr{Final State} در نظر می‌گیریم) می‌خواهیم برای هر یک از زبان‌های زیر یک ماژول سخت‌افزاری اختصاصی طراحی کنیم و به تراشه‌های خود اضافه کنیم. هدف از این کار، ایجاد پروتکل‌های ارتباطی منحصربه‌فرد برای ارتباط پرسرعت بین این تراشه‌ها از طریق پیام‌های باینری است.
+
+الفبای ما تنها شامل صفر و یک است ($\Sigma = \{\text{\lr{1}},\text{\lr{0}}\}$).
+
+برای هرکدام از این زبان‌ها (پروتکل‌ها)  \lr{RE} نوشته و \lr{NFA} آن را رسم کنید.(همپوشانی ها را مثل مثال گفته شده در نظر نگیرید و فرض کنید هم‌پوشانی نمی‌خواهیم.)
+
+\begin{itemize}
+
+    \item[\textbf{(a}]
+          گیرنده به ازای هر دنباله‌ ای به طول فرد که تعدادی یک \lr{($1$)} متوالی به‌دنبال تعدادی صفر \lr{($0$)} متوالی بیاید خروجی $1$ تولید می‌کند. (5 نمره)
+
+    \item[\textbf{(b}]
+          گیرنده به ازای هر دنباله‌ ای(با خواندن از پرارزش‌ترین بیت یا \lr{MSB}) که بر $12$ بخش‌پذیر باشد و به‌دنبال آن در انتها یک جفت صفر \lr{($00$)} دیگر بیاید خروجی \lr{$1$} تولید می‌کند. (5 نمره)
+
+    \item[\textbf{(c}]
+          گیرنده به ازای هر دنباله‌ای که با سه بار تکرار صفر \lr{($000$)} شروع شود و در ادامه‌ی آن دنباله‌ای ببیند که شامل زیردنباله‌ی \lr{$01010$} نیست و با سه بار تکرار یک \lr{($111$)} به پایان برسد خروجی یک تولید می‌کند.(برای این مورد تنها NFA رسم کنید.) (10 امتیازی نمره)
+
+\end{itemize}
+
+
+\begin{latin}
+    \begin{center}
+        \begin{tikzpicture}[shorten >=1pt, node distance=3cm, on grid, auto, >=Stealth]
+            % تعریف حالت‌ها به فرمت ماشین مور (State / Output)
+            \node[state,initial]  (S_0)                      {$S_0 / 0$};
+            \node[state]          (S_1) [right=of S_0]       {$S_1 / 0$};
+            \node[state]          (S_2) [right=of S_1]       {$S_2 / 0$};
+            \node[state]          (S_3) [right=of S_2]       {$S_3 / 1$};
+
+            % تعریف یال‌ها (فقط مقادیر ورودی روی یال‌ها نوشته می‌شود)
+            \path[->]
+            (S_0) edge [loop above] node {$0$} (S_0)
+            edge              node {$1$} (S_1)
+            (S_1) edge [loop above] node {$1$} (S_1)
+            edge              node {$0$} (S_2)
+            (S_2) edge [bend left=40]  node {$0$} (S_0)
+            edge              node {$1$} (S_3)
+            (S_3) edge [bend left=40]  node {$0$} (S_2)
+            edge [bend right=50] node[swap] {$1$} (S_1);
+        \end{tikzpicture}
+    \end{center}
+\end{latin}
+
+
+
+\ifcompileanswers\solution
+
+    \begin{itemize}
+
+        \item[\textbf{(a}]
+              رشته به فرم \lr{$0^n 1^m$} است که \lr{$n, m \ge 1$} و مجموع طول آن‌ها فرد است. پس یکی از آن‌ها زوج و دیگری فرد است.
+
+              \begin{center}
+                  \lr{$\mathrm{RE} = 00(00)^*1(11)^* + 0(00)^*11(11)^*$}
+              \end{center}
+
+              \begin{center}
+                  \begin{latin}
+                      \begin{tikzpicture}[shorten >=1pt, node distance=2.5cm, on grid, auto,
+                              every state/.style={draw, minimum size=0.8cm, text=black}]
+
+                          % States
+                          \node[state, initial, initial text=] (p_0) {$p_0$};
+
+                          % Top Branch
+                          \node[state] (p_1) [above right=1.5cm and 2.5cm of p_0] {$p_1$};
+                          \node[state] (p_2) [right=2.5cm of p_1] {$p_2$};
+                          \node[state, accepting] (p_3) [right=2.5cm of p_2] {$p_3$};
+                          \node[state] (p_4) [right=2.5cm of p_3] {$p_4$};
+
+                          % Bottom Branch
+                          \node[state] (p_5) [below right=1.5cm and 2.5cm of p_0] {$p_5$};
+                          \node[state] (p_6) [below=2.5cm of p_5] {$p_6$};
+                          \node[state] (p_7) [right=2.5cm of p_5] {$p_7$};
+                          \node[state, accepting] (p_8) [right=2.5cm of p_7] {$p_8$};
+
+                          % Transitions
+                          \path[->]
+                          (p_0) edge node [above left] {0} (p_1)
+                          edge node [below left] {0} (p_5)
+
+                          % Top branch paths
+                          (p_1) edge node {0} (p_2)
+                          (p_2) edge [bend left] node {0} (p_1)
+                          edge node {1} (p_3)
+                          (p_3) edge [bend left] node {1} (p_4)
+                          (p_4) edge [bend left] node {1} (p_3)
+
+                          % Bottom branch paths
+                          (p_5) edge [bend left] node {0} (p_6)
+                          edge node {1} (p_7)
+                          (p_6) edge [bend left] node {0} (p_5)
+                          (p_7) edge node {1} (p_8)
+                          (p_8) edge [bend left] node {1} (p_7);
+
+                      \end{tikzpicture}
+                  \end{latin}
+              \end{center}
+
+
+        \item[\textbf{(b}]
+
+              مضرب 12 در مبنای دو یعنی عددی که بر 3 بخش‌پذیر باشد و به دو تا صفر (\lr{00}) ختم شود. طبق صورت سوال، به دنبال این رشته، یک جفت صفر (\lr{00}) دیگر هم می‌آید. بنابراین کل رشته معادل یک مضرب 3 است که به چهار صفر (\lr{0000}) ختم می‌شود. در ویدئوهای درس به تشریح راجع‌به اعداد باینری بخش‌پذیر بر 3 بحث شده است.
+
+
+              \begin{center}
+                  \lr{$\mathrm{RE} = (0 + 1(01^*0)^*1)^*0000$}
+              \end{center}
+
+              \begin{center}
+                  \begin{latin}
+                      \begin{tikzpicture}[shorten >=1pt, node distance=2cm, on grid, auto,
+                              every state/.style={draw, minimum size=0.8cm, text=black}]
+
+                          % States
+                          \node[state, initial, initial text=] (q_0) {$q_0$};
+
+                          % Tail states
+                          \node[state] (s_1) [right=3.5cm of q_0] {$s_1$};
+                          \node[state] (s_2) [right=2.2cm of s_1] {$s_2$};
+                          \node[state] (s_3) [right=2.2cm of s_2] {$s_3$};
+                          \node[state, accepting] (s_4) [right=2.2cm of s_3] {$s_4$};
+
+                          % Modulo 3 NFA states
+                          \node[state] (q_1) [below left=2.5cm and 1cm of q_0] {$q_1$};
+                          \node[state] (q_2) [right=3.5cm of q_1] {$q_2$};
+
+                          % Transitions
+                          \path[->]
+                          (q_0) edge [loop above] node {0} ()
+                          edge node {0} (s_1)
+                          edge [bend left=20] node [left] {1} (q_1)
+
+                          (q_1) edge [bend left=20] node [left] {1} (q_0)
+                          edge [bend left=20] node {0} (q_2)
+
+                          (q_2) edge [bend left=20] node {0} (q_1)
+                          edge [loop right] node {1} ()
+
+                          (s_1) edge node {0} (s_2)
+                          (s_2) edge node {0} (s_3)
+                          (s_3) edge node {0} (s_4);
+
+                      \end{tikzpicture}
+                  \end{latin}
+              \end{center}
+
+
+        \item[\textbf{(c}]
+              %   رشته با \lr{000} شروع می‌شود. سپس وارد یک بخش میانی می‌شویم که نباید دنباله \lr{01010} در آن شکل بگیرد. بنابراین هرگاه به مرز کامل شدن این دنباله رسیدیم مسیر را مسدود می‌کنیم (عدم وجود یال).
+
+              %   \begin{center}
+              %       \lr{$\mathrm{RE} = 000 \cdot \left(0(0+100)^*(11+1011)+1\right)^*\bigg(\epsilon + 0(0+100)^*\big(\epsilon + 1(\epsilon + 0(1+\epsilon))\big)\bigg) \cdot 111$}
+              %   \end{center}
+
+              %   \begin{center}
+              %       \begin{latin}
+              %           \resizebox{\textwidth}{!}{ % در صورت نیاز به کوچک کردن برای جا شدن در صفحه
+              %               \begin{tikzpicture}[shorten >=1pt, node distance=1.7cm, on grid, auto,
+              %                       every state/.style={draw, minimum size=0.8cm, text=black}]
+
+              %                   % S-chain (Start sequence)
+              %                   \node[state, initial, initial text=] (s_0) {$s_0$};
+              %                   \node[state] (s_1) [right=of s_0] {$s_1$};
+              %                   \node[state] (s_2) [right=of s_1] {$s_2$};
+
+              %                   % M-chain (Middle sequence avoiding 01010)
+              %                   \node[state] (m_0) [right=of s_2] {$m_0$};
+              %                   \node[state] (m_1) [right=of m_0] {$m_1$};
+              %                   \node[state] (m_2) [right=of m_1] {$m_2$};
+              %                   \node[state] (m_3) [right=of m_2] {$m_3$};
+              %                   \node[state] (m_4) [right=of m_3] {$m_4$};
+
+              %                   % E-chain (End sequence)
+              %                   \node[state] (e_0) [above=2.5cm of m_2] {$e_0$};
+              %                   \node[state] (e_1) [right=of e_0] {$e_1$};
+              %                   \node[state] (e_2) [right=of e_1] {$e_2$};
+              %                   \node[state, accepting] (e_3) [below=1.25cm of e_2] {$e_3$};
+
+              %                   % Transitions
+              %                   \path[->]
+              %                   % S-chain straight edges
+              %                   (s_0) edge node {0} (s_1)
+              %                   (s_1) edge node {0} (s_2)
+              %                   (s_2) edge node {0} (m_0)
+
+              %                   % M-chain straight edges
+              %                   (m_0) edge node {0} (m_1)
+              %                   (m_1) edge node {1} (m_2)
+              %                   (m_2) edge node {0} (m_3)
+              %                   (m_3) edge node {1} (m_4)
+
+              %                   % M-chain loops and backward edges
+              %                   (m_0) edge [loop below] node {1} ()
+              %                   (m_1) edge [loop above] node {0} ()
+              %                   (m_2) edge [bend left=40] node [below] {1} (m_0)
+              %                   (m_3) edge [bend left=40] node [below] {0} (m_1)
+              %                   (m_4) edge [bend left=55] node [below] {1} (m_0)
+
+              %                   % Epsilon transitions from M-chain to e_0
+              %                   (m_0) edge [bend left=45] node [above] {$\epsilon$} (e_0)
+              %                   (m_1) edge node [pos=0.7, left] {$\epsilon$} (e_0)
+              %                   (m_2) edge node [pos=0.6, left] {$\epsilon$} (e_0)
+              %                   (m_3) edge node [pos=0.7, below left] {$\epsilon$} (e_0)
+              %                   (m_4) edge node [pos=0.75, below left] {$\epsilon$} (e_0)
+
+              %                   % E-chain edges
+              %                   (e_0) edge node {1} (e_1)
+              %                   (e_1) edge node {1} (e_2)
+              %                   (e_2) edge node [right] {1} (e_3);
+
+              %               \end{tikzpicture}
+              %           }
+              %       \end{latin}
+              %   \end{center}
+
+              زبان را به صورت اشتراک دو زبان دیگر بیان کرده و سپس RE و NFA را رسم می‌کنیم.
+              زبان اول رشته‌هایی است که با 3 صفر شروع شده و با 3 یک خاتمه می‌یابند.
+              \begin{center}
+                  \begin{latin}
+                      \resizebox{\textwidth}{!}{
+                          \begin{tikzpicture}[shorten >=1pt, node distance=2cm, on grid, auto,
+                                  every state/.style={draw, minimum size=0.8cm, text=black}]
+
+                              % S-chain (Starts with 000)
+                              \node[state, initial, initial text=] (s_0) {$S_0$};
+                              \node[state] (s_1) [right=of s_0] {$S_1$};
+                              \node[state] (s_2) [right=of s_1] {$S_2$};
+
+                              % Trap state
+                              \node[state] (trap) [below=2cm of s_1] {Trap};
+
+                              % M-chain (Contains 111)
+                              \node[state] (m_0) [right=of s_2] {$S_3$};
+                              \node[state] (m_1) [right=of m_0] {$S_4$};
+                              \node[state] (m_2) [right=of m_1] {$S_5$};
+                              \node[state, accepting] (m_3) [right=of m_2] {$S_6$};
+
+                              % Transitions
+                              \path[->]
+                              % Starts with 000 sequence
+                              (s_0) edge node {0} (s_1)
+                              (s_1) edge node {0} (s_2)
+                              (s_2) edge node {0} (m_0)
+
+                              % Transitions to Trap
+                              (s_0) edge [bend right=20] node [below left] {1} (trap)
+                              (s_1) edge node [left] {1} (trap)
+                              (s_2) edge [bend left=20] node [right] {1} (trap)
+                              (trap) edge [loop below] node {0,1} ()
+
+                              % Finding 111 sequence
+                              (m_0) edge [loop above] node {0} ()
+                              (m_0) edge node {1} (m_1)
+                              (m_1) edge node {1} (m_2)
+                              (m_2) edge node {1} (m_3)
+
+                              % Backwards edges for 0s in the 111 search
+                              (m_1) edge [bend left=40] node [above] {0} (m_0)
+                              (m_2) edge [bend left=55] node [above] {0} (m_0)
+                              (m_3) edge [bend left=40] node [below] {0} (m_0)
+
+                              % Accept state loop
+                              (m_3) edge [loop above] node {1} ();
+
+                          \end{tikzpicture}
+                      }
+                  \end{latin}
+              \end{center}
+
+              زبان دوم مکمل زبانی‌است که شامل زیررشته‌ی \lr{01010} هست.
+              \begin{center}
+                  \begin{latin}
+                      \resizebox{\textwidth}{!}{
+                          \begin{tikzpicture}[shorten >=1pt, node distance=2cm, on grid, auto,
+                                  every state/.style={draw, minimum size=0.8cm, text=black}]
+
+                              % States
+                              \node[state, initial, initial text=] (q_0) {$S_0$};
+                              \node[state] (q_1) [right=of q_0] {$S_1$};
+                              \node[state] (q_2) [right=of q_1] {$S_2$};
+                              \node[state] (q_3) [right=of q_2] {$S_3$};
+                              \node[state] (q_4) [right=of q_3] {$S_4$};
+                              \node[state, accepting] (q_5) [right=of q_4] {$S_5$};
+
+                              % Transitions
+                              \path[->]
+                              (q_0) edge [loop above] node {0,1} ()
+                              (q_0) edge node {0} (q_1)
+                              (q_1) edge node {1} (q_2)
+                              (q_2) edge node {0} (q_3)
+                              (q_3) edge node {1} (q_4)
+                              (q_4) edge node {0} (q_5)
+                              (q_5) edge [loop above] node {0,1} ();
+
+                          \end{tikzpicture}
+                      }
+                  \end{latin}
+              \end{center}
+
+              ابتدا این NFA را قطعی می‌کنیم:
+              \begin{center}
+                  \begin{latin}
+                      \resizebox{\textwidth}{!}{
+                          \begin{tikzpicture}[shorten >=1pt, node distance=2.2cm, on grid, auto,
+                                  every state/.style={draw, minimum size=0.8cm, text=black}]
+
+                              \node[state, initial, initial text=] (q_0) {$q_0$};
+                              \node[state] (q_1) [right=of q_0] {$q_1$};
+                              \node[state] (q_2) [right=of q_1] {$q_2$};
+                              \node[state] (q_3) [right=of q_2] {$q_3$};
+                              \node[state] (q_4) [right=of q_3] {$q_4$};
+                              \node[state, accepting] (q_5) [right=of q_4] {$q_5$};
+
+                              \path[->]
+                              (q_0) edge node {0} (q_1)
+                              (q_1) edge node {1} (q_2)
+                              (q_2) edge node {0} (q_3)
+                              (q_3) edge node {1} (q_4)
+                              (q_4) edge node {0} (q_5)
+
+                              (q_0) edge [loop above] node {1} ()
+                              (q_1) edge [loop above] node {0} ()
+                              (q_2) edge [bend left=45] node [below] {1} (q_0)
+                              (q_3) edge [bend left=45] node [below] {0} (q_1)
+                              (q_4) edge [bend left=55] node [below] {1} (q_0)
+
+                              (q_5) edge [loop above] node {0,1} ();
+                          \end{tikzpicture}
+                      }
+                  \end{latin}
+              \end{center}
+
+              حال آن را مکمل می‌کنیم:
+              \begin{center}
+                  \begin{latin}
+                      \resizebox{\textwidth}{!}{
+                          \begin{tikzpicture}[shorten >=1pt, node distance=2cm, on grid, auto,
+                                  every state/.style={draw, minimum size=0.8cm, text=black}]
+
+                              % States (q_0 to q_4 are now accepting, q_5 is not)
+                              \node[state, initial, initial text=, accepting] (q_0) {$q_0$};
+                              \node[state, accepting] (q_1) [right=of q_0] {$q_1$};
+                              \node[state, accepting] (q_2) [right=of q_1] {$q_2$};
+                              \node[state, accepting] (q_3) [right=of q_2] {$q_3$};
+                              \node[state, accepting] (q_4) [right=of q_3] {$q_4$};
+                              \node[state] (q_5) [right=of q_4] {$q_5$}; % This is now a non-accepting trap state
+
+                              % Transitions (Exactly the same as before)
+                              \path[->]
+                              % Forward transitions for the pattern "01010"
+                              (q_0) edge node {0} (q_1)
+                              (q_1) edge node {1} (q_2)
+                              (q_2) edge node {0} (q_3)
+                              (q_3) edge node {1} (q_4)
+                              (q_4) edge node {0} (q_5)
+
+                              % Failure transitions (when the pattern breaks)
+                              (q_0) edge [loop above] node {1} ()
+                              (q_1) edge [loop above] node {0} ()
+                              (q_2) edge [bend left=40] node [below] {1} (q_0)
+                              (q_3) edge [bend left=40] node [below] {0} (q_1)
+                              (q_4) edge [bend left=50] node [below] {1} (q_0)
+
+                              % Absorbing state (Trap state for the complement)
+                              (q_5) edge [loop above] node {0,1} ();
+
+                          \end{tikzpicture}
+                      }
+                  \end{latin}
+              \end{center}
+
+              حال اشتراک گیری دو DFA:
+              \begin{center}
+                  \begin{latin}
+                      \resizebox{\textwidth}{!}{
+                          \begin{tikzpicture}[shorten >=1pt, node distance=2.5cm, on grid, auto,
+                                  every state/.style={draw, minimum size=0.8cm, text=black}]
+
+                              % Main upper chain
+                              \node[state, initial, initial text=] (z0) {$q_0,S_0$};
+                              \node[state] (z1) [right=of z0] {$q_1,S_1$};
+                              \node[state] (z2) [right=of z1] {$q_1,S_2$};
+                              \node[state] (z3) [right=of z2] {$q_1,S_3$};
+                              \node[state] (z4) [right=of z3] {$q_2,S_4$};
+                              \node[state] (z7) [right=of z4] {$q_0,S_5$};
+                              \node[state, accepting] (z8) [right=of z7] {$q_0,S_6$};
+
+                              % Pattern checking states (lower chain)
+                              \node[state] (z5) [below=2cm of z4] {$q_3,S_3$};
+                              \node[state] (z6) [right=of z5] {$q_4,S_4$};
+
+                              % Trap state
+                              \node[state] (trap) [below=2cm of z1] {Trap};
+
+                              % Transitions
+                              \path[->]
+                              % 000 prefix check
+                              (z0) edge node {0} (z1)
+                              (z1) edge node {0} (z2)
+                              (z2) edge node {0} (z3)
+
+                              % Early 1s go to Trap
+                              (z0) edge node [left] {1} (trap)
+                              (z1) edge node [left] {1} (trap)
+                              (z2) edge node [left] {1} (trap)
+
+                              % Hub state Z3 (Saw 0s)
+                              (z3) edge [loop above] node {0} ()
+                              (z3) edge node {1} (z4)
+
+                              % Z4 (Saw ...01)
+                              (z4) edge node [left] {0} (z5)
+                              (z4) edge node {1} (z7)
+
+                              % Z5 (Saw ...010)
+                              (z5) edge [bend left=20] node [below left] {0} (z3)
+                              (z5) edge node {1} (z6)
+
+                              % Z6 (Saw ...0101)
+                              (z6) edge [bend left=15] node [below] {0} (trap) % 01010 pattern completes -> Trap
+                              (z6) edge node [right] {1} (z7)
+
+                              % Z7 (Saw ...11)
+                              (z7) edge [bend right=45] node [above] {0} (z3)
+                              (z7) edge node {1} (z8)
+
+                              % Z8 (Accept: Saw ...111)
+                              (z8) edge [bend right=55] node [above] {0} (z3)
+                              (z8) edge [loop above] node {1} ()
+
+                              % Trap loop
+                              (trap) edge [loop below] node {0,1} ();
+
+                          \end{tikzpicture}
+                      }
+                  \end{latin}
+              \end{center}
+
+    \end{itemize}
+
+\fi\end{document}

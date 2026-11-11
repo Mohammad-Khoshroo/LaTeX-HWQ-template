@@ -1,0 +1,171 @@
+\documentclass[12pt,largemargins]{homework}
+
+\begin{document}
+
+\question#{30}
+
+در نظریه زبان‌های صوری، عملگر معروفی وجود دارد که با الهام از مشتقات توابع چندمتغیره در ریاضیات، به دنیای زبان‌ها وارد شده است.
+
+عملگر «مشتق چپ مرتبه $n$» برای یک زبان $L$ نسبت به نماد $a$ (که $a \in \Sigma$) به صورت زیر تعریف می‌شود:
+$$ \frac{\partial^n L}{\partial a^n} = \{ w \mid a^n w \in L \} $$
+
+با اعمال این عملگر بر روی یک زبان، خروجی ما یک زبان جدید خواهد بود. به عنوان مثال، اگر رشته \lr{aaabad} عضو زبان $L$ باشد، با محاسبه مشتق چپ مرتبه دوم از زبان $L$ نسبت به نماد $a$، رشته \lr{abad} عضو زبان $\frac{\partial^2 L}{\partial a^2}$ خواهد بود. به همین ترتیب، رشته \lr{bad} عضو $\frac{\partial^3 L}{\partial a^3}$ می‌شود.
+
+\textit{(توجه: این صرفاً مثالی برای نشان دادن تأثیر عملگر روی یک رشته بود؛ در حالت کلی این عملگر بر کل مجموعه رشته‌های درون زبان اعمال می‌شود و زبان جدیدی را می‌سازد).}
+
+اکنون با در نظر داشتن این مفهوم، قصد داریم عمیق‌تر به خواص جبری این عملگر نگاه کنیم:
+
+\begin{itemize}
+    \item[\textbf{الف)}] در حساب دیفرانسیل توابع چندمتغیره، مشتقات جزئی معمولاً خاصیت جابجایی دارند (به عنوان مثال $\frac{\partial^2 f}{\partial x \partial y} = \frac{\partial^2 f}{\partial y \partial x}$). با ارائه یک دلیل روشن یا یک مثال نقض در دنیای زبان‌ها، نشان دهید که چرا در مشتق‌گیری متوالی از زبان‌ها، ترتیب مشتق‌گیری اهمیت دارد و عملگرهای مشتق نسبت به نمادهای مختلف (مثلاً $\frac{\partial^2 L}{\partial a \partial b}$ در برابر $\frac{\partial^2 L}{\partial b \partial a}$) خاصیت جابجایی \textbf{ندارند}؟ (5 نمره)
+
+          \vspace{0.5cm}
+
+    \item[\textbf{ب)}] فرض کنید $L_1$ و $L_2$ دو زبان دلخواه روی الفبای $\Sigma$ بوده و $a, b \in \Sigma$ باشند. درستی روابط جبری \textcolor{red}{قرمز} زیر را برای عملگر مشتق مرتبه اول اثبات کنید (راهنمایی: از تعریف پایه‌ای مشتق چپ مبتنی بر مجموعه‌ها استفاده کنید): (15 نمره)
+
+          \begin{align}
+               & \textcolor{red}{\frac{\partial}{\partial a}(\{a\}) = \{\epsilon\} \quad , \quad \frac{\partial}{\partial a}(\emptyset) = \emptyset \quad , \quad \frac{\partial}{\partial a}(\{\epsilon\}) = \emptyset} \\[10pt]
+               & \textcolor{red}{\frac{\partial}{\partial a}(\{b\}) = \emptyset \quad (\text{برای } b \neq a)}                                                                                                           \\[10pt]
+               & \textcolor{red}{\frac{\partial}{\partial a}(L_1 \cup L_2) = \frac{\partial L_1}{\partial a} \cup \frac{\partial L_2}{\partial a}}                                                                       \\[10pt]
+               & \frac{\partial}{\partial a}(L_1 L_2) = \left( \frac{\partial L_1}{\partial a} L_2 \right) \cup
+              \begin{cases}
+                  \frac{\partial L_2}{\partial a} & \text{اگر } \epsilon \in L_1    \\
+                  \emptyset                       & \text{اگر } \epsilon \notin L_1
+              \end{cases}                                                                                                                         \\[10pt]
+               & \frac{\partial}{\partial a}(L^*) = \left(\frac{\partial L}{\partial a}\right) L^*
+          \end{align}
+
+          % \vspace{5cm}
+
+    \item[\textbf{ج)}]
+          \textbf{الگوریتم برژوزوفسکی \lr{(Brzozowski's Algorithm)}:} \\
+          این الگوریتم روشی مستقیم برای تبدیل یک عبارت منظم (RE) به ماشین خودکار متناهی قطعی (DFA) با استفاده از مفهوم «مشتق عبارت منظم» است. مراحل این الگوریتم به صورت خلاصه به شرح زیر است:
+          \begin{enumerate}
+              \item \textbf{حالت شروع:} حالت شروع DFA، همان عبارت منظم اولیه (فرض کنید $R$) است.
+              \item \textbf{ایجاد حالت‌های جدید (مشتق‌گیری):} برای هر حالت و هر نماد از الفبا (مثلاً $a$)، مشتق آن عبارت منظم نسبت به آن نماد، یعنی $D_a(R)$، را محاسبه می‌کنیم. عبارت منظمِ حاصل، یک حالت جدید در DFA خواهد بود و یک یال با برچسب $a$ از حالت قبلی به این حالت جدید رسم می‌شود.
+              \item \textbf{پایان‌پذیری:} این فرایند را برای تمام حالت‌های جدید و تمام نمادهای الفبا تکرار می‌کنیم. اگر مشتق محاسبه شده معادل با یکی از حالت‌های قبلی بود، یال را به همان حالت قبلی متصل می‌کنیم. الگوریتم زمانی پایان می‌یابد که هیچ حالت (عبارت منظم) جدیدی تولید نشود.
+              \item \textbf{حالت‌های نهایی:} هر حالتی (عبارت منظمی) که شامل رشته تهی ($\epsilon$) باشد، یک حالت پذیرش (نهایی) در DFA خواهد بود.
+          \end{enumerate}
+
+          با استفاده از الگوریتم برژوزوفسکی و محاسبه مشتق‌ها، ماشین DFA معادل با عبارت منظم زیر را روی الفبای $\Sigma = \{a, b\}$ رسم کنید. (نوشتن مراحل مشتق‌گیری الزامی است). (10 نمره)
+          $$r = (a+b)^*abb$$
+
+\end{itemize}
+
+\ifcompileanswers\solution
+
+    \begin{itemize}
+
+        \item[\textbf{الف)}] \textbf{عدم وجود خاصیت جابجایی در مشتق‌گیری متوالی}
+
+              در مشتق‌گیری چپ متوالی از زبان‌ها، ترتیب مشتق‌گیری معادل با بررسی پیشوندهای رشته‌های زبان به همان ترتیب است. مشتق چپ مرتبه دوم $\frac{\partial^2 L}{\partial a \partial b}$ به این معناست که ابتدا نسبت به $a$ و سپس نسبت به $b$ مشتق می‌گیریم. با توجه به تعریف مشتق چپ، این عمل معادل است با حذف پیشوند $ab$ از رشته‌ها. از طرف دیگر، $\frac{\partial^2 L}{\partial b \partial a}$ معادل حذف پیشوند $ba$ است. از آنجا که پیشوندهای $ab$ و $ba$ متفاوت‌اند، این دو مشتق برابر نخواهند بود.
+
+              \textbf{مثال نقض:}
+              فرض کنید زبان $L$ تنها شامل یک رشته باشد: $L = \{ab\}$
+              \begin{itemize}
+                  \item محاسبه $\frac{\partial^2 L}{\partial a \partial b}$:
+                        ابتدا $\frac{\partial L}{\partial a} = \{b\}$. سپس $\frac{\partial}{\partial b}(\{b\}) = \{\epsilon\}$.
+                  \item محاسبه $\frac{\partial^2 L}{\partial b \partial a}$:
+                        ابتدا $\frac{\partial L}{\partial b} = \emptyset$ (چون هیچ رشته‌ای با $b$ شروع نمی‌شود). سپس $\frac{\partial}{\partial a}(\emptyset) = \emptyset$.
+              \end{itemize}
+              از آنجا که $\{\epsilon\} \neq \emptyset$، نتیجه می‌گیریم مشتق متوالی خاصیت جابجایی ندارد.
+
+              \vspace{0.5cm}
+
+        \item[\textbf{ب)}] \textbf{اثبات روابط جبری مشتق چپ مرتبه اول}
+
+              بر اساس تعریف پایه‌ای $ \frac{\partial L}{\partial a} = \{ w \mid aw \in L \} $:
+
+              \begin{itemize}
+                  \item $\frac{\partial}{\partial a}(\{a\}) = \{ w \mid aw \in \{a\} \}$. تنها در صورتی $aw = a$ است که $w = \epsilon$. پس حاصل $\{\epsilon\}$ است.
+
+                  \item $\frac{\partial}{\partial a}(\emptyset) = \{ w \mid aw \in \emptyset \}$. چون تهی هیچ عضوی ندارد، حاصل $\emptyset$ است.
+
+                  \item $\frac{\partial}{\partial a}(\{\epsilon\}) = \{ w \mid aw \in \{\epsilon\} \}$. چون طول $aw$ حداقل یک است، هرگز نمی‌تواند برابر $\epsilon$ باشد. پس حاصل $\emptyset$ است.
+
+                  \item برای $b \neq a$: $\frac{\partial}{\partial a}(\{b\}) = \{ w \mid aw \in \{b\} \}$. رشته $aw$ با $a$ شروع می‌شود ولی رشته $b$ با $b$. پس هیچ $w$ای وجود ندارد و حاصل $\emptyset$ است.
+
+                  \item $\frac{\partial}{\partial a}(L_1 \cup L_2) = \{ w \mid aw \in (L_1 \cup L_2) \} = \{ w \mid aw \in L_1 \text{ یا } aw \in L_2 \}$. بر اساس نظریه مجموعه‌ها این برابر است با $\{ w \mid aw \in L_1 \} \cup \{ w \mid aw \in L_2 \} = \frac{\partial L_1}{\partial a} \cup \frac{\partial L_2}{\partial a}$.
+
+                %   \item برای حاصل‌ضرب $L_1 L_2$: رشته $aw$ عضو $L_1 L_2$ است، یعنی $aw = xy$ که $x \in L_1$ و $y \in L_2$.
+                %         دو حالت داریم:
+                %         \begin{itemize}
+                %             \item حالت اول: $x$ با $a$ شروع شود، یعنی $x = ax'$. در این صورت $w = x'y$ و $x' \in \frac{\partial L_1}{\partial a}$. پس $w \in \left( \frac{\partial L_1}{\partial a} L_2 \right)$.
+                %             \item حالت دوم: $x = \epsilon$ باشد (که فقط اگر $\epsilon \in L_1$ ممکن است). در این صورت $aw = y$، پس $y$ با $a$ شروع می‌شود و $y \in L_2$. بنابراین $w \in \frac{\partial L_2}{\partial a}$.
+                %         \end{itemize}
+                %         اجتماع این دو حالت دقیقاً رابطه داده شده را نتیجه می‌دهد.
+
+                %   \item با استفاده از تعریف $L^* = \{\epsilon\} \cup LL^*$:
+                %         $$ \frac{\partial}{\partial a}(L^*) = \frac{\partial}{\partial a}(\{\epsilon\} \cup L L^*) = \emptyset \cup \frac{\partial}{\partial a}(L L^*) $$
+                %         طبق قاعده ضرب، چون $\epsilon \in L^*$ است، اما اینجا داریم $L L^*$ را بسط می‌دهیم، از طریق تعریف بازگشتی به دست می‌آوریم که مشتق برابر با $\left(\frac{\partial L}{\partial a}\right) L^*$ خواهد بود.
+              \end{itemize}
+
+              \vspace{0.5cm}
+
+        \item[\textbf{ج)}] \textbf{الگوریتم برژوزوفسکی برای $r = (a+b)^*abb$}
+
+              ابتدا حالت شروع را تعریف می‌کنیم:
+              $$ q_{\text{\lr{0}}} = (a+b)^*abb $$
+
+              حال مشتقات (حالت‌های جدید) را محاسبه می‌کنیم:
+              \begin{itemize}
+                  \item \textbf{مشتقات $q_{\text{\lr{0}}}$:}
+                        $$ D_a(q_{\text{\lr{0}}}) = D_a((a+b)^*)abb \cup D_a(abb) = (a+b)^*abb \cup bb \quad \Rightarrow \text{حالت جدید } q_{\text{\lr{1}}} $$
+                        $$ D_b(q_{\text{\lr{0}}}) = D_b((a+b)^*)abb \cup D_b(abb) = (a+b)^*abb \cup \emptyset = (a+b)^*abb = q_{\text{\lr{0}}} $$
+
+                  \item \textbf{مشتقات $q_{\text{\lr{1}}}$:}
+                        $$ D_a(q_{\text{\lr{1}}}) = D_a((a+b)^*abb \cup bb) = D_a((a+b)^*abb) \cup D_a(bb) = ((a+b)^*abb \cup bb) \cup \emptyset = q_{\text{\lr{1}}} $$
+                        $$ D_b(q_{\text{\lr{1}}}) = D_b((a+b)^*abb \cup bb) = D_b((a+b)^*abb) \cup D_b(bb) = (a+b)^*abb \cup b \quad \Rightarrow \text{حالت جدید } q_{\text{\lr{2}}} $$
+
+                  \item \textbf{مشتقات $q_{\text{\lr{2}}}$:}
+                        $$ D_a(q_{\text{\lr{2}}}) = D_a((a+b)^*abb \cup b) = D_a((a+b)^*abb) \cup D_a(b) = ((a+b)^*abb \cup bb) \cup \emptyset = q_{\text{\lr{1}}} $$
+                        $$ D_b(q_{\text{\lr{2}}}) = D_b((a+b)^*abb \cup b) = D_b((a+b)^*abb) \cup D_b(b) = (a+b)^*abb \cup \epsilon \quad \Rightarrow \text{حالت جدید } q_{\text{\lr{3}}} $$
+
+                  \item \textbf{مشتقات $q_{\text{\lr{3}}}$:}
+                        $$ D_a(q_{\text{\lr{3}}}) = D_a((a+b)^*abb \cup \epsilon) = D_a((a+b)^*abb) \cup D_a(\epsilon) = ((a+b)^*abb \cup bb) \cup \emptyset = q_{\text{\lr{1}}} $$
+                        $$ D_b(q_{\text{\lr{3}}}) = D_b((a+b)^*abb \cup \epsilon) = D_b((a+b)^*abb) \cup D_b(\epsilon) = (a+b)^*abb \cup \emptyset = q_{\text{\lr{0}}} $$
+              \end{itemize}
+
+              \textbf{حالت‌های نهایی:} حالتی نهایی است که $\epsilon$ در آن وجود داشته باشد. در بین حالت‌های به دست آمده، تنها در $q_{\text{\lr{3}}}$ عبارت $\epsilon$ ظاهر شده است. بنابراین $q_{\text{\lr{3}}}$ حالت پذیرش است. (در این ماشین حالت تله یا \lr{dead state} نداریم).
+
+              \vspace{1cm}
+
+              \begin{center}
+                  \begin{latin}
+                      \begin{tikzpicture}[shorten >=1pt, on grid, auto,
+                              every state/.style={draw, minimum size=0.9cm, text=black}]
+
+                          % States
+                          \node[state]            (q0) at (0,0) {$q_0$};
+                          \node[state]            (q1) at (3.0, 0) {$q_1$};
+                          \node[state]            (q2) at (6.0, 0) {$q_2$};
+                          \node[state, accepting] (q3) at (9.0, 0) {$q_3$};
+
+                          % Diagonal initial arrow for q0
+                          \draw[->, >=stealth, thick] (-1.2, 1.2) -- (q0.135);
+
+                          % Transitions
+                          \path[->]
+                          % q0 transitions
+                          (q0) edge [loop below] node {$b$} ()
+                          (q0) edge node {$a$} (q1)
+
+                          % q1 transitions
+                          (q1) edge [loop above] node {$a$} ()
+                          (q1) edge node {$b$} (q2)
+
+                          % q2 transitions
+                          (q2) edge [bend right=45] node [above] {$a$} (q1)
+                          (q2) edge node {$b$} (q3)
+
+                          % q3 transitions
+                          (q3) edge [bend right=60] node [above] {$a$} (q1)
+                          (q3) edge [bend left=45] node [below] {$b$} (q0);
+
+                      \end{tikzpicture}
+                  \end{latin}
+              \end{center}
+
+    \end{itemize}
+
+
+\fi\end{document}

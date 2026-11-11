@@ -1,0 +1,263 @@
+% \documentclass[12pt,largemargins]{homework}
+
+% \begin{document}
+
+% \question#{0}
+
+% اتوماتای غیرقطعی زیر را با استفاده از الگوریتم \lr{Powerset / Subset Construction} قطعی کنید.(دقت شود که از ساده‌سازی اتوماتا خودداری شود وگرنه نمره کامل تعلق  به جواب تعلق نمی‌گیرد)
+% \vspace{1cm}
+
+% \begin{center}
+%     \begin{latin}
+%         \begin{tikzpicture}[shorten >=1pt, node distance=2.5cm, on grid, auto,
+%                 every state/.style={draw=black!100, thick, fill=white, minimum size=1cm},
+%                 >=Stealth]
+
+%             % Nodes
+%             \node[state,xshift=-1cm, initial, initial text=] (q0) {$q_0$};
+%             \node[state, accepting] (q11) [above right=1.5cm and 2.5cm of q0] {$q_{1,1}$};
+%             \node[state, xshift=-1cm] (q12) [right=2.5cm of q0] {$q_{1,2}$};
+%             \node[state, accepting] (q13) [below right=1.5cm and 2.5cm of q0] {$q_{1,3}$};
+
+%             \node[state] (q21) [right=2.5cm of q11] {$q_{2,1}$};
+%             \node[state] (q22) [right=2.5cm of q13] {$q_{2,2}$};
+
+%             \node[state] (q3b) [above right=1cm and 2cm of q21] {$q_{3,b}$};
+%             \node[state] (q3c) [below right=1cm and 2cm of q22] {$q_{3,c}$};
+
+%             \node[state] (q4b) [right=2cm of q3b] {$q_{4,b}$};
+%             \node[state] (q4c) [right=2cm of q3c] {$q_{4,c}$};
+
+%             \node[state] (q5b) [below right=1cm and 1.5cm of q4b] {$q_{5,b}$};
+%             \node[state] (q5c) [above right=1cm and 1.5cm of q4c] {$q_{5,c}$};
+
+%             \node[state, accepting, xshift=1cm] (F) [right=4.5cm of q12] {$F$};
+
+%             % Edges
+%             \path[->]
+%             (q0) edge node {$\varepsilon$} (q11)
+%             (q0) edge node {$\varepsilon$} (q12)
+%             (q0) edge node [swap] {$\varepsilon$} (q13)
+
+%             (q11) edge [loop above] node {$b,c$} ()
+%             (q11) edge node {$a$} (q21)
+
+%             (q12) edge [loop right] node {$b,c$} () % Representation based on sketch
+
+%             (q13) edge [loop below] node {$b,c$} ()
+%             (q13) edge node [swap] {$a$} (q22)
+
+%             (q21) edge [loop above] node {$a$} ()
+%             (q21) edge [bend right=15] node [swap] {$b,c$} (q22)
+%             (q21) edge node {$b$} (q3b)
+
+%             (q22) edge [loop below] node {$a$} ()
+%             (q22) edge [bend right=15] node [swap] {$b,c$} (q21)
+%             (q22) edge node [swap] {$c$} (q3c)
+
+%             (q3b) edge node {$\varepsilon$} (q4b)
+%             (q3c) edge node [swap] {$\varepsilon$} (q4c)
+
+%             (q4b) edge [bend left] node {$a$} (q5b)
+
+%             (q4c) edge [bend right] node [swap] {$a$} (q5c)
+
+%             (q5b) edge [loop left] node {$b$} ()
+%             (q5b) edge node {$c$} (F)
+
+%             (q5c) edge [loop left] node {$c$} ()
+%             (q5c) edge node [swap] {$b$} (F)
+
+%             (F) edge node [swap] {$\varepsilon$} (q21)
+%             (F) edge node {$\varepsilon$} (q22);
+
+%         \end{tikzpicture}
+%     \end{latin}
+% \end{center}
+
+% \ifcompileanswers\solution
+
+%     \begin{center}
+%         \begin{latin}
+%             \resizebox{\textwidth}{!}{%
+%                 \begin{tikzpicture}[shorten >=1pt, auto,
+%                         every state/.style={rectangle, rounded corners, draw=black!100, thick, fill=white, minimum width=2.5cm, minimum height=1cm, align=center, font=\tiny, inner sep=4pt},
+%                         >=Stealth]
+
+%                     % States Definition with explicit coordinates matching the image
+%                     \node[state, initial above, initial text=, accepting] (s0) at (0, 0) {$\{q_0, q_{1,1}, q_{1,2}, q_{1,3}\}$};
+%                     \node[state, accepting] (s1) at (5, -1) {$\{q_{1,1}, q_{1,2}, q_{1,3}\}$};
+
+%                     \node[state] (s2) at (0, -3) {$\{q_{2,1}, q_{2,2}\}$};
+
+%                     \node[state] (s3) at (-3.5, -6) {$\{q_{2,1}, q_{2,2}, q_{3,b}, q_{4,b}\}$};
+%                     \node[state] (s4) at (3.5, -6) {$\{q_{2,1}, q_{2,2}, q_{3,c}, q_{4,c}\}$};
+
+%                     \node[state] (s5) at (-3.5, -9) {$\{q_{2,1}, q_{2,2}, q_{5,b}\}$};
+%                     \node[state] (s6) at (3.5, -9) {$\{q_{2,1}, q_{2,2}, q_{5,c}\}$};
+
+%                     \node[state] (s7) at (-6.5, -12) {$\{q_{2,1}, q_{2,2}, q_{3,b}, q_{4,b}, q_{5,b}\}$};
+%                     \node[state, accepting] (s8) at (-1.5, -12) {$\{F, q_{2,1}, q_{2,2}, q_{3,c}, q_{4,c}\}$};
+%                     \node[state, accepting] (s9) at (3, -12) {$\{F, q_{2,1}, q_{2,2}, q_{3,b}, q_{4,b}\}$};
+%                     \node[state] (s10) at (7.5, -12) {$\{q_{2,1}, q_{2,2}, q_{3,c}, q_{4,c}, q_{5,c}\}$};
+
+%                     % Edges
+%                     \path[->]
+%                     % From {q0, q11, q12, q13}
+%                     (s0) edge node {$a$} (s2)
+%                     (s0) edge [bend left=15] node {$b,c$} (s1)
+
+%                     % From {q11, q12, q13}
+%                     (s1) edge [bend left=15] node {$a$} (s2)
+%                     (s1) edge [loop right] node {$b,c$} ()
+
+%                     % From {q21, q22}
+%                     (s2) edge [loop below] node {$a$} ()
+%                     (s2) edge [bend right=10] node {$b$} (s3)
+%                     (s2) edge [bend left=10] node {$c$} (s4)
+
+%                     % From {q21, q22, q3b, q4b}
+%                     (s3) edge node {$a$} (s5)
+%                     (s3) edge [loop left] node {$b$} ()
+%                     (s3) edge [bend left=5] node {$c$} (s4)
+
+%                     % From {q21, q22, q3c, q4c}
+%                     (s4) edge node {$a$} (s6)
+%                     (s4) edge [bend left=5] node {$b$} (s3)
+%                     (s4) edge [loop right] node {$c$} ()
+
+%                     % From {q21, q22, q5b}
+%                     (s5) edge [distance=5cm,out=160, in=180, looseness=1.2] node {$a$} (s2)
+%                     (s5) edge node {$b$} (s7)
+%                     (s5) edge node {$c$} (s8)
+
+%                     % From {q21, q22, q5c}
+%                     (s6) edge [distance=5cm,out=20, in=0, looseness=1.2] node[right] {$a$} (s2)
+%                     (s6) edge node {$b$} (s9)
+%                     (s6) edge node {$c$} (s10)
+
+%                     % From {q21, q22, q3b, q4b, q5b}
+%                     (s7) edge [bend left=20] node {$a$} (s5)
+%                     (s7) edge [loop left] node {$b$} ()
+%                     (s7) edge [bend right=15] node {$c$} (s8)
+
+%                     % From {F, q21, q22, q3c, q4c}
+%                     (s8) edge [bend right=10] node[below, yshift=-10pt] {$a$} (s6)
+%                     (s8) edge [out=90, in=300] node[above] {$b$} (s3)
+%                     (s8) edge [out=60, in=240] node {$c$} (s4)
+
+%                     % From {F, q21, q22, q3b, q4b}
+%                     (s9) edge [out=120, in=320] node {$a$} (s5)
+%                     (s9) edge [out=100, in=340] node[right] {$b$} (s3)
+%                     (s9) edge [bend left=10] node {$c$} (s4)
+
+%                     % From {q21, q22, q3c, q4c, q5c}
+%                     (s10) edge [bend right=20] node[above] {$a$} (s6)
+%                     (s10) edge [bend left=15] node {$b$} (s9)
+%                     (s10) edge [loop right] node {$c$} ();
+
+%                 \end{tikzpicture}%
+%             }
+%         \end{latin}
+%     \end{center}
+
+
+
+% \fi\end{document}
+
+
+
+
+
+\documentclass[12pt,largemargins]{homework}
+
+\begin{document}
+
+\question#{10}
+
+
+درستی یا نادرستی هریک از گزاره‌های زیر را بررسی کنید. اگر درست هستند برای آن اثبات و اگر نادرست هستند مثال نقضی بیاورید.
+
+\begin{itemize}
+      \item[\textbf{(a}]
+            اگر $L_1$ و $L_2$ زبان‌هایی منظم باشند آنگاه تفاضل مشترک این دو نیز منظم خواهد بود. ($L_1 \Delta L_2$) (3 نمره)
+
+            % \item[\textbf{(a}] 
+            % اگر بدانیم که $L_1$، $L_2$ و $L_3$ زبان‌هایی غیر منظم هستند حتماً $L_1 \cap L_2 \cap L_3$ غیر منظم است.
+
+      \item[\textbf{(b}]
+            اگر $L_1$ زبانی متناهی و $L_1 \cup L_2$ زبانی منظم باشد آنگاه $L_2$ نیز منظم خواهد بود. (4 نمره)
+
+      \item[\textbf{(c}]
+            اگر زبان $L$ یک زبان منظم باشد آنگاه همواره $L \cap L'$ یک زبان منظم خواهد بود.($L'$ یک زبان دیگر تحت الفبای $L$ است.) (3 نمره)
+            % \item[\textbf{(b}] 
+            % اگر $L_1$ و $L_2$ زبان‌هایی باشند به طوری که $L_1$، $L_1L_2$ و $L_2L_1$ همه منظم باشند، پس $L_2$ حتماً باید منظم باشد.
+
+            % \item[\textbf{(c}]
+            % فرض کنید که $n$ زبان منظم $L_1, L_2, \dots, L_n$ را در اختیار داریم. ادعا می‌کنیم که با اعمال هر تابع $f$ روی این زبان‌ها که آن را بتوان با عملیات‌های پایه توصیف کرد، زبان خروجی ما منظم خواهد بود؛ اما برعکس آن صادق نخواهد بود. (یعنی اگر تابع را در اختیار داشته باشیم و بدانیم که یک خروجی $L'$  آن منظم باشد، لزوما زبان‌های ورودی‌ مربوط به آن منظم نبوده‌اند)
+            % $$f(L_1, L_2, \dots, L_n) = L' \implies L'\text{\lr{ is Regular}}$$
+            % این ادعا را بررسی کنید. \\
+            % \textit{(عملیات‌های پایه شامل عملیات‌های منطقی اجتماع، اشتراک و مکمل است.)}
+
+\end{itemize}
+
+\ifcompileanswers\solution
+
+      \begin{itemize}
+            \item[\textbf{(a}] \textbf{درست}
+
+                  تفاضل متقارن دو مجموعه به صورت جبری یعنی:
+                  \[
+                        L_1 \Delta L_2 = (L_1 - L_2) \cup (L_2 - L_1) = (L_1 \cap \overline{L_2}) \cup (L_2 \cap \overline{L_1})
+                  \]
+                  که می‌دانیم زبان‌های منظم نسبت به مکمل و اجتماع و اشتراک بسته هستند پس تفاضل متقارن دو زبان منظم نیز طبق رابطه بالا منظم است.
+
+                  % \vspace{0.5cm}
+
+                  % \item[\textbf{(a}] \textbf{نادرست}
+
+                  % سه زبان غیرمنظم زیر را در نظر بگیرید:
+                  % \begin{align*}
+                  % L_1 &= \{a^nb^n \mid n \ge 1\} \cup \{\varepsilon\} \\
+                  % L_2 &= \{a^nb^nc^n \mid n \ge 1\} \cup \{\varepsilon\} \\
+                  % L_3 &= \{a^nb^nc^nd^n \mid n \ge 1\} \cup \{\varepsilon\}
+                  % \end{align*}
+                  % اگر اشتراک این سه زبان را حساب کنیم، تنها رشته‌ای که در هر سه مشترک است رشته تهی ($\varepsilon$) است:
+                  % \[
+                  % L_1 \cap L_2 \cap L_3 = \{\varepsilon\}
+                  % \]
+                  % زبان خروجی یک زبان محدود (متناهی) است و می‌دانیم که همه زبان‌های متناهی، منظم هستند.
+
+                  \vspace{0.5cm}
+
+            \item[\textbf{(b}] \textbf{درست}
+
+                  $L_2 = (L_1 \cup L_2) - (L_1 - L_2)$ چون $L_1$ یک زبان محدود است پس منظم است پس تفاضل آن با یک زبان دیگر نیز محدود خواهد بود و طبق بسته بودن زبان های منظم نسبت به تفاضل و اجتماع $L_2$ منظم خواهد بود.
+
+                  \vspace{0.5cm}
+
+                  % \item[\textbf{(b}] \textbf{نادرست}
+
+                  % فرض کنید الفبا $\Sigma = \{a,b\}$ باشد. قرار می‌دهیم:
+                  % \begin{itemize}
+                  %     \item $L_1 = \Sigma^*$
+                  %     \item $L_2 = \{a^nb^n \mid n \ge 0\}$
+                  % \end{itemize}
+                  % می‌دانیم که $L_1L_2$  زیرمجموعه‌ی $\Sigma^*$  هست.
+                  % همچنین اگر از $L_2$ ما رشته‌ \lr{$n=0$} را در نظر بگیریم دراین صورت $L_1L_2$  همان $\Sigma^*$  می‌شود پس $\Sigma^*$  نیز زیرمجموعه‌ی $L_1L_2$  است. درنتیجه زبان ما همان $\Sigma^*$ خواهد بود و منظم است به همین ترتیب می‌توان برای $L_2L_1$ نشان داد. اما همانطور که مشخص است $L_2$ منظم نیست و این مثال نقض ماست.
+
+                  % \vspace{0.5cm}
+
+                  % \item[\textbf{(c}] \textbf{درست}
+
+                  % می‌دانیم که زبان‌های منظم نسبت به ۳ عملگر مکمل‌گیری، اجتماع و اشتراک بسته هستند. پس اعمال هر تابع منطقی روی زبان‌های منظم، یک زبان منظم خواهد داد. 
+                  % در نتیجه زبان‌های منظم نسبت به هر تابع $f$ ساخته شده از عملیات‌های پایه، بسته خواهد بود. 
+                  % برای رد عکس این ادعا نیز کافی است همان مثال بخش b را ارائه دهیم.
+
+            \item[\textbf{(c}] \textbf{نادرست}
+                  کافی است برای $L$ زبان $\Sigma^*$ و برای $L'$ زبان $a^nb^n$ را مثال بزنیم که اشتراک این دو زبان همان $L'$ است و منظم نیست.
+
+
+      \end{itemize}
+
+\fi\end{document}

@@ -1,0 +1,250 @@
+\documentclass[12pt,largemargins]{homework}
+
+\begin{document}
+    
+\question#{10}
+
+
+ماشین حالت متناهی (\lr{FSM}) زیر از یک تراشه استخراج شده است و قصد داریم زبان (پروتکل ارتباطی) پذیرفته‌شده توسط آن را بیابیم. با استفاده از الگوریتم حذف وضعیت‌ها (\lr{State Elimination}) و رعایت دقیق ترتیب حذف از چپ به راست ($c_i, b_i$)، عبارت منظم (\lr{RE}) معادل این ماشین را به‌دست آورید.
+
+\vspace{1cm}
+
+\begin{center}
+\begin{latin}
+\begin{tikzpicture}[shorten >=1pt, on grid, auto,
+                    every state/.style={draw, minimum size=0.9cm, text=black}]
+                    
+  % Center Node
+  \node[state] (a) at (0,0) {$a$};
+  
+  % Diagonal initial arrow
+  \draw[->, >=stealth, thick] (-1.2, 1.2) -- (a.135);
+
+  % Branch 1 (Left)
+  \node[state, accepting] (b1) at (-2.5, 0) {$b_1$};
+  \node[state]            (c1) at (-2.5, 2.5) {$c_1$};
+
+  % Branch 2 (Top)
+  \node[state, accepting] (b2) at (0, 2.5) {$b_2$};
+  \node[state]            (c2) at (2.5, 2.5) {$c_2$};
+
+  % Branch 3 (Right)
+  \node[state, accepting] (b3) at (2.5, 0) {$b_3$};
+  \node[state]            (c3) at (2.5, -2.5) {$c_3$};
+
+  % Branch 4 (Bottom)
+  \node[state, accepting] (b4) at (0, -2.5) {$b_4$};
+  \node[state]            (c4) at (-2.5, -2.5) {$c_4$};
+
+  % Transitions
+  \path[->]
+    % Center to inner branches
+    (a) edge node [below] {0} (b1)
+    (a) edge node [right] {1} (b2)
+    (a) edge node [below] {0} (b3)
+    (a) edge node [right] {1} (b4)
+
+    % Branch 1 (Left) b1 <-> c1
+    (b1.70)  edge node [right] {0} (c1.290)
+    (c1.250) edge node [left]  {1} (b1.110)
+    (b1)     edge [loop left]  node {1} ()
+    (c1)     edge [loop above] node {1} ()
+
+    % Branch 2 (Top) b2 <-> c2
+    (b2.340) edge node [below] {0} (c2.200)
+    (c2.160) edge node [above] {1} (b2.20)
+    (b2)     edge [loop above] node {1} ()
+    (c2)     edge [loop right] node {0} ()
+
+    % Branch 3 (Right) b3 <-> c3
+    (b3.290) edge node [right] {0} (c3.70)
+    (c3.110) edge node [left]  {1} (b3.250)
+    (b3)     edge [loop right] node {1} ()
+    (c3)     edge [loop below] node {1} ()
+
+    % Branch 4 (Bottom) b4 <-> c4
+    (b4.200) edge node [below] {0} (c4.340)
+    (c4.20)  edge node [above] {1} (b4.160)
+    (b4)     edge [loop below] node {1} ()
+    (c4)     edge [loop left]  node {0} ();
+
+\end{tikzpicture}
+\end{latin}
+\end{center}
+
+
+\ifcompileanswers\solution
+
+\begin{center}
+\begin{latin}
+\begin{tikzpicture}[shorten >=1pt, auto,
+                    every state/.style={draw, minimum size=0.8cm, text=black}]
+                    
+  % State S (Gray)
+  \node[state, fill=gray!30] (S) at (-5.5, -1.5) {$S$};
+
+  % Center State a
+  \node[state] (a) at (0, 0) {$a$};
+
+  % The b_i States
+  \node[state] (b1) at (-3, 0) {$b_1$};
+  \node[state] (b2) at (0, 3) {$b_2$};
+  \node[state] (b3) at (3, 0) {$b_3$};
+  \node[state] (b4) at (0, -3) {$b_4$};
+
+  % The c_i States
+  \node[state] (c1) at (-3, 3) {$c_1$};
+  \node[state] (c2) at (3, 3) {$c_2$};
+  \node[state] (c3) at (3, -3) {$c_3$};
+  \node[state] (c4) at (-3, -3) {$c_4$};
+
+  % Final State F (Gray)
+  \node[state, accepting, fill=gray!30] (F) at (11, 0) {$F$};
+
+  % Transitions
+  \path[->]
+    % S to a
+    (S) edge [out=0, in=225] node [above left] {$\varepsilon$} (a)
+
+    % a to b_i
+    (a) edge node [below] {$0$} (b1)
+    (a) edge node [left] {$1$} (b2)
+    (a) edge node [above] {$0$} (b3)
+    (a) edge node [right] {$1$} (b4)
+
+    % b1 and c1
+    (b1) edge [bend right=15] node [right] {$0$} (c1)
+    (c1) edge [bend right=15] node [left] {$1$} (b1)
+    (b1) edge [loop left] node {$1$} ()
+    (c1) edge [loop above] node {$1$} ()
+
+    % b2 and c2
+    (b2) edge [bend right=15] node [below] {$0$} (c2)
+    (c2) edge [bend right=15] node [above] {$1$} (b2)
+    (b2) edge [loop above] node {$1$} ()
+    (c2) edge [loop above] node {$0$} ()
+
+    % b3 and c3
+    (b3) edge [bend right=15] node [left] {$0$} (c3)
+    (c3) edge [bend right=15] node [right] {$1$} (b3)
+    (b3) edge [loop above] node {$1$} ()
+    (c3) edge [loop below] node {$1$} ()
+
+    % b4 and c4
+    (b4) edge [bend right=15] node [above] {$0$} (c4)
+    (c4) edge [bend right=15] node [below] {$1$} (b4)
+    (b4) edge [loop below] node {$1$} ()
+    (c4) edge [loop left] node {$0$} ()
+
+    % b_i to F (Epsilon transitions)
+    (b3) edge node [above] {$\varepsilon$} (F)
+    (b1) edge [out=70, in=110, distance=7cm] node [above] {$\varepsilon$} (F)
+    (b2) edge [out=45, in=120, distance=4.5cm] node [below] {$\varepsilon$} (F)
+    (b4) edge [out=-45, in=-90, distance=6cm] node [below] {$\varepsilon$} (F);
+
+\end{tikzpicture}
+\end{latin}
+\end{center}
+
+
+\begin{center}
+\begin{latin}
+\begin{tikzpicture}[shorten >=1pt, auto,
+                    every state/.style={draw, minimum size=0.8cm, text=black}]
+                    
+  % State S 
+  \node[state, fill=gray!30] (S) at (-5.5, -1.5) {$S$};
+
+  % Center State a
+  \node[state] (a) at (0, 0) {$a$};
+
+  % The b_i States
+  \node[state] (b1) at (-3, 0) {$b_1$};
+  \node[state] (b2) at (0, 3) {$b_2$};
+  \node[state] (b3) at (3, 0) {$b_3$};
+  \node[state] (b4) at (0, -3) {$b_4$};
+
+  % Final State F 
+  \node[state, accepting , fill=gray!30] (F) at (11, 0) {$F$};
+
+  % Transitions
+  \path[->]
+    % S to a
+    (S) edge [out=0, in=225] node [above left] {$\varepsilon$} (a)
+
+    % a to b_i
+    (a) edge node [below] {$0$} (b1)
+    (a) edge node [left] {$1$} (b2)
+    (a) edge node [above] {$0$} (b3)
+    (a) edge node [right] {$1$} (b4)
+
+    % Loops on b_i
+    (b1) edge [loop left] node {$1 + 01^+$} ()
+    (b2) edge [loop above] node {$1 + 0^+1$} ()
+    (b3) edge [loop above] node {$1 + 01^+$} ()
+    (b4) edge [loop below] node {$1 + 0^+1$} ()
+
+    % b_i to F (Epsilon transitions)
+    (b3) edge node [above] {$\varepsilon$} (F)
+    (b1) edge [out=90, in=100, distance=7cm] node [above] {$\varepsilon$} (F)
+    (b2) edge [out=0, in=135, distance=3cm] node [above] {$\varepsilon$} (F)
+    (b4) edge [out=15, in=200, distance=3cm] node [below] {$\varepsilon$} (F);
+
+\end{tikzpicture}
+\end{latin}
+\end{center}
+
+\begin{center}
+\begin{latin}
+\begin{tikzpicture}[shorten >=1pt, auto,
+                    every state/.style={draw, minimum size=0.8cm, text=black}]
+                    
+  % ==========================================
+  % Part 1 (Top Graph)
+  % ==========================================
+  % States
+  \node[state, fill=gray!30] (S1) at (-5.5, -1.5) {$S$};
+  \node[state] (a1) at (0, 0) {$a$};
+  \node[state] (b3) at (2.5, 0) {$b_3$};
+  \node[state] (b4) at (0, -2.5) {$b_4$};
+  \node[state, accepting, fill=gray!30] (F1) at (10, 0) {$F$};
+
+  % Transitions
+  \path[->]
+    (S1) edge [out=0, in=225] node [above left] {$\varepsilon$} (a1)
+    (a1) edge node [above] {$0$} (b3)
+    (a1) edge node [right] {$1$} (b4)
+    (b3) edge [loop above] node {$1 + 01^+$} ()
+    (b4) edge [loop below] node {$1 + 0^+1$} ()
+    (b3) edge node [above] {$\varepsilon$} (F1)
+    (b4) edge node [below] {$\varepsilon$} (F1);
+
+  % ==========================================
+  % Part 2 (Middle Graph)
+  % ==========================================
+  % States
+  \node[state, fill=gray!30] (S2) at (-5.5, -6.5) {$S$};
+  \node[state] (a2) at (0, -5) {$a$};
+  \node[state, accepting, fill=gray!30] (F2) at (10, -5) {$F$};
+
+  % Transitions
+  \path[->]
+    (S2) edge [out=0, in=225] node [above left] {$\varepsilon$} (a2)
+    (a2) edge node [above] {$0(1 + 01^+)^* + 1(1 + 0^+1)^*$} (F2);
+
+  % ==========================================
+  % Part 3 (Bottom Graph)
+  % ==========================================
+  % States
+  \node[state, fill=gray!30] (S3) at (-4, -9) {$S$};
+  \node[state, accepting, fill=gray!30] (F3) at (8.5, -9) {$F$};
+
+  % Transitions
+  \path[->]
+    (S3) edge node [above] {$RE = 0(1 + 01^+)^* + 1(1 + 0^+1)^*$} (F3);
+
+\end{tikzpicture}
+\end{latin}
+\end{center}
+
+\fi\end{document}
