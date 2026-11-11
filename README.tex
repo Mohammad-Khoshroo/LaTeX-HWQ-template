@@ -1,93 +1,158 @@
 %!TEX root = README.tex
-\documentclass[11pt,a4paper]{article}
+\documentclass[10pt,a4paper]{article}
 
-\usepackage[margin=1in]{geometry}
+\usepackage[margin=0.8in]{geometry}
 \usepackage{amsmath,amssymb}
 \usepackage{xcolor}
 \usepackage[colorlinks=true,linkcolor=blue!75!black,urlcolor=blue!75!black]{hyperref}
 \usepackage{parskip}
 \usepackage{minted}
+\usepackage{booktabs}
 \usepackage{enumitem}
 
-\title{\textbf{Formal Languages and Automata Theory}\\[0.25em]\large Homework \LaTeX{} Template Documentation}
+\title{\textbf{University Homework \LaTeX{} Template}\\[0.25em]\large A General-Purpose Bilingual Template for Academic Assignments}
 \author{University of Tehran}
 \date{}
 
 \begin{document}
 \maketitle
 
-\section{Overview}
-This project is a homework template for the \textbf{FLAT} course taught at the University of Tehran.
+\section{Introduction}
+This repository provides a versatile, general-purpose \textbf{academic homework template} designed for university courses across computer science, engineering, and mathematics. Originally adapted for courses at the \textbf{University of Tehran}, it is fully course-agnostic and can be effortlessly customized for any homework assignment, quiz, project description, or lab report.
 
-\section{Structure}
-The project consists of several main folders and configuration files:
-\begin{itemize}[leftmargin=1.5em, itemsep=0.3em]
-    \item \texttt{Background/} --- Used for header graphics and university logos.
-    \item \texttt{Fonts/} --- Contains Persian fonts utilized throughout the document.
-    \item \texttt{homework.cls} --- The core document class. Originally written by \href{https://github.com/jez/latex-homework-class}{jez} and subsequently enhanced by \href{https://github.com/BehzadShayegh}{Behzad Shayegh}, \href{https://github.com/borna-tl}{Borna Tavasoli}, and \href{https://github.com/HesamAsad}{Hesam Asadollahzadeh} to support Persian typography and specialized commands. It was later modified by \href{https://github.com/MehdiJmlkh}{Mehdi Jamalkhah} to fit the FLAT homework template. During the Iran-US war, when access to the global internet in Iran was restricted, further enhancements were made by \href{https://github.com/Mohammad-Khoshroo}{Mohammad Khoshroo} to provide full offline compatibility with TeX Live.
+\section{Key Features}
+\begin{itemize}[leftmargin=1.5em, itemsep=0.2em]
+    \item \textbf{Course-Agnostic Design:} Easily configure the template for any course (e.g., Algorithms, Automata, Operating Systems, Machine Learning, Circuits) simply by modifying metadata variables.
+    \item \textbf{Official Academic Header:} Built-in \texttt{\textbackslash makeheader} generates a clean header with faculty logos, course title, semester, deadline, and instructor/TA contact info.
+    \item \textbf{Bilingual \& Persian Typesetting (XePersian):} Pre-configured with standard Persian fonts (\textit{XB Niloofar}, \textit{XB Zar}, \textit{IRLotus}) and seamless bidirectional switching via \texttt{\textbackslash LRE\{\}}.
+    \item \textbf{Modular Subfiles Structure:} Manage large assignments by writing individual questions in standalone files (\texttt{Q1.tex}, \texttt{Q2.tex}) combined via \texttt{\textbackslash subfile\{...\}}.
+    \item \textbf{Conditional Solutions:} Toggle whether student solutions are compiled or omitted using the \texttt{compileanswers} boolean switch.
+    \item \textbf{Syntax-Highlighted Code:} Formats source code elegantly using the \texttt{minted} package for Python, C/C++, Verilog, Java, and more.
 \end{itemize}
 
-Each topic folder contains question files, while a master file (e.g. \texttt{HW.tex} or \texttt{event.tex}) compiles all questions into a unified document. Authors can specify their personal information in the master file. By adjusting the parameters in \texttt{compile\_answers.tex}, you can toggle whether solutions are compiled alongside each question.
+\section{Repository Structure}
+\begin{itemize}[leftmargin=1.5em, itemsep=0.2em]
+    \item \texttt{homework.cls} --- Core document class. Originally by \href{https://github.com/jez/latex-homework-class}{jez}, enhanced by \href{https://github.com/BehzadShayegh}{Behzad Shayegh}, \href{https://github.com/borna-tl}{Borna Tavasoli}, and \href{https://github.com/HesamAsad}{Hesam Asadollahzadeh} for Persian support. Adapted by \href{https://github.com/MehdiJmlkh}{Mehdi Jamalkhah} and updated by \href{https://github.com/Mohammad-Khoshroo}{Mohammad Khoshroo} for TeX Live compatibility.
+    \item \texttt{Background/} --- University of Tehran and Faculty of Engineering logos.
+    \item \texttt{Fonts/} --- High-quality Persian TrueType fonts bundled directly in the repository.
+    \item \texttt{HW.tex} --- Master document defining course variables and including question subfiles.
+    \item \texttt{latexmkrc} --- Automated configuration for Overleaf and local \texttt{latexmk} builds.
+    \item \texttt{LaTeX-build/} --- Standard build directory for compiler artifacts (\texttt{.pdf}, \texttt{.log}, \texttt{.aux}).
+\end{itemize}
 
-\section{Usage}
-This template supports various customization options alongside standard \LaTeX{} commands.
+\section{Document Class Options}
+Pass these optional flags to \texttt{\textbackslash documentclass[...]{homework}}:
+\begin{itemize}[leftmargin=1.5em, itemsep=0.2em]
+    \item \texttt{largemargins} --- Widens page margins to leave ample space for grading annotations.
+    \item \texttt{newpage} --- Automatically begins each new question on a fresh page.
+    \item \texttt{anonymous} --- Omits personal contributor details for blind grading.
+\end{itemize}
 
-\subsection{Bilingual \& Directional Support}
-The default text direction is set to right-to-left for Persian. Whenever you wish to switch direction to include English text or math formulas, wrap your content inside the \texttt{\textbackslash LRE\{\}} command:
-\begin{center}
-    \texttt{\textbackslash LRE\{this is a sample text in English.\}}
-\end{center}
+\clearpage
 
-\subsection{Commands}
-For a comprehensive list of commands, consult the original \href{https://github.com/jez/latex-homework-class}{documentation}.
-\begin{itemize}[leftmargin=1.5em, itemsep=0.3em]
-    \item \texttt{\textbackslash question} --- Creates a question header with a horizontal rule underneath.
-    \item \texttt{\textbackslash question*\{text\}} --- Creates a custom-titled question header (\textit{text} by default).
-    \item \texttt{\textbackslash question\#\{text\}\{points\}} --- Same as \texttt{\textbackslash question*}, with dedicated space for points.
+\section{Configuring for Any Course}
+To use this template for your course, define the metadata commands in your master \texttt{.tex} file:
+
+\begin{Verbatim}[frame=lines,framesep=2mm,fontsize=\footnotesize]
+\documentclass[12pt,largemargins]{homework}
+
+\newcommand{\eventclass}{Design and Analysis of Algorithms} % Course name
+\newcommand{\eventsemester}{Fall 2026}                    % Semester
+\newcommand{\eventtype}{Homework}                         % Assignment type
+\newcommand{\eventnum}{1}                                 % Assignment number
+\newcommand{\eventcntrbs}{Instructor / TA Name}           % Author or TA
+\newcommand{\hwemail}{ta-email@ut.ac.ir}                  % Contact email
+\newcommand{\eventdatetype}{Due Date:}                    % Due label
+\newcommand{\eventDeadlineDay}{25}                        % Day
+\newcommand{\eventDeadlineMonth}{November}                % Month
+\newcommand{\eventDeadlineYear}{2026}                     % Year
+
+\begin{document}
+\makeheader
+\subfile{./Q1.tex}
+\subfile{./Q2.tex}
+\end{document}
+\end{Verbatim}
+
+\section{Question \& Solution Commands}
+\begin{itemize}[leftmargin=1.5em, itemsep=0.2em]
+    \item \texttt{\textbackslash question} --- Starts a numbered question with a black dividing rule.
+    \item \texttt{\textbackslash question*\{Title\}} --- Starts a question header with a custom title string.
+    \item \texttt{\textbackslash question\#\{Points\}} --- Creates a question header displaying allocated point values.
     \item \texttt{\textbackslash solution} --- Creates a solution header followed by a colon.
-    \item \texttt{\textbackslash solution*\{text\}} --- Creates a solution header (\textit{text} by default) followed by a red underline.
+    \item \texttt{\textbackslash solution*\{Title\}} --- Custom solution header with a red dividing rule.
+    \item \texttt{alphaparts} / \texttt{arabicparts} --- Sub-question lists for (a), (b) or 1.1, 1.2 numbering.
+    \item \texttt{\textbackslash answerbox\{height\}} --- Generates an empty framed box for student answers.
 \end{itemize}
 
-\subsection{Code Listings with Minted}
-You can use the \texttt{minted} package to include syntax-highlighted source code:
-\begin{quote}
-    \texttt{\textbackslash begin\{minted\}\{<language>\}}\\
-    \textit{<your code here>}\\
-    \texttt{\textbackslash end\{minted\}}
-\end{quote}
-Be sure to wrap the entire block in \texttt{\textbackslash LRE\{\}} if embedded within a Persian context.
+\section{Code Listings with Minted}
+To include syntax-highlighted code in assignments or solutions, use the \texttt{minted} environment (wrap within \texttt{\textbackslash LRE\{\}} when inside a Persian context):
 
-\subsubsection*{Example}
-\begin{minted}[frame=lines,framesep=2mm,linenos,fontsize=\small]{python}
+\begin{minted}[frame=lines,framesep=2mm,linenos,fontsize=\footnotesize]{python}
 import numpy as np
 
-def incmatrix(genl1, genl2):
-    m = len(genl1)
-    n = len(genl2) # doy67u
-    M = None       # to become the incidence matrix
-    VT = np.zeros((n * m, 1), int)  # dummy variable
-
-    # compute the bitwise xor matrix
-    M1 = bitxormatrix(genl1)
-    M2 = np.triu(bitxormatrix(genl2), 1)
-
-    for i in range(m - 1):
-        for j in range(i + 1, m):
-            [r, c] = np.where(M2 == M1[i, j])
-            for k in range(len(r)):
-                VT[i * n + r[k]] = 1
-                VT[i * n + c[k]] = 1
-                VT[j * n + r[k]] = 1
-                VT[j * n + c[k]] = 1
-
-                if M is None:
-                    M = np.copy(VT)
-                else:
-                    M = np.concatenate((M, VT), 1)
-
-                VT = np.zeros((n * m, 1), int)
-
-    return M
+def solve_system(A, b):
+    """Solve linear system Ax = b and verify residual norm."""
+    x = np.linalg.solve(A, b)
+    residual = np.linalg.norm(np.dot(A, x) - b)
+    return x, residual
 \end{minted}
+
+\clearpage
+
+\section{Compilation Guide across Environments}
+
+Because the template utilizes \textbf{XePersian} and TrueType fonts, compilation requires the \textbf{XeLaTeX} engine with \texttt{-shell-escape} (for \texttt{minted} code highlighting). Below is how to run it in various workflows:
+
+\subsection{1. Overleaf (Recommended if no local TeX distribution is installed)}
+Overleaf is the easiest option for students without TeX Live or MiKTeX, as it requires zero local installation:
+\begin{enumerate}[leftmargin=1.5em, itemsep=0.2em]
+    \item Compress the project folder into a \texttt{.zip} archive (excluding \texttt{LaTeX-build/}).
+    \item In Overleaf, click \textbf{New Project} $\rightarrow$ \textbf{Upload Project} and upload the zip.
+    \item The included \texttt{latexmkrc} automatically sets the compiler to \textbf{XeLaTeX} and enables \texttt{-shell-escape}. (You can also verify this in Overleaf's left \textbf{Menu} $\rightarrow$ \textbf{Compiler} $\rightarrow$ \textbf{XeLaTeX}).
+    \item Set \textbf{Main document} in Menu to \texttt{HW.tex} (or \texttt{README.tex}) and click \textbf{Recompile}.
+\end{enumerate}
+
+\subsection{2. Visual Studio Code + \LaTeX{} Workshop}
+If you use VS Code with a local TeX distribution (TeX Live or MiKTeX):
+\begin{enumerate}[leftmargin=1.5em, itemsep=0.2em]
+    \item Install the official \textbf{LaTeX Workshop} extension from the VS Code Marketplace.
+    \item Ensure Python and the \texttt{pygments} package are installed (\texttt{pip install pygments}).
+    \item In your VS Code \texttt{settings.json}, configure a two-pass XeLaTeX recipe:
+\begin{Verbatim}[frame=single,fontsize=\scriptsize]
+"latex-workshop.latex.tools": [{
+    "name": "xelatex",
+    "command": "xelatex",
+    "args": ["-synctex=1", "-interaction=nonstopmode", "-output-directory=%OUTDIR%",
+             "-file-line-error", "-shell-escape", "%DOC%"]
+}],
+"latex-workshop.latex.recipes": [{
+    "name": "Compile with XeLaTeX",
+    "tools": ["xelatex", "xelatex"]
+}],
+"latex-workshop.latex.outDir": "%DIR%/LaTeX-build"
+\end{Verbatim}
+    \item Open \texttt{HW.tex} or \texttt{README.tex} and press \texttt{Ctrl + Alt + B} to compile.
+\end{enumerate}
+
+\subsection{3. TeXworks (Standard with MiKTeX \& TeX Live)}
+TeXworks is the lightweight default editor bundled with most Windows TeX installers (including MiKTeX):
+\begin{enumerate}[leftmargin=1.5em, itemsep=0.2em]
+    \item Open \texttt{HW.tex} in TeXworks.
+    \item Next to the green Play button, select \textbf{XeLaTeX} from the dropdown menu (never use pdfLaTeX).
+    \item To enable code highlighting with \texttt{minted}:
+    \begin{itemize}[itemsep=0.1em]
+        \item Navigate to \textbf{Edit} $\rightarrow$ \textbf{Preferences} $\rightarrow$ \textbf{Typesetting} tab.
+        \item Under \textbf{Processing tools}, select \textbf{XeLaTeX} and click \textbf{Edit}.
+        \item Add a new argument \texttt{-shell-escape} and move it before \texttt{\$synctexoption}. Click OK.
+    \end{itemize}
+    \item Click the green \textbf{Play} button to compile. Run it twice on the first build so that minted code and bookmarks populate.
+\end{enumerate}
+
+\subsection{4. Local Distribution Notes (MiKTeX vs. TeX Live)}
+\begin{itemize}[leftmargin=1.5em, itemsep=0.2em]
+    \item If you do not have TeX Live installed, \textbf{MiKTeX} is a lightweight alternative. In the MiKTeX Console settings, set \textit{"Install missing packages on-the-fly"} to \textbf{Yes}.
+    \item If you prefer not to install any local software at all, use \textbf{Overleaf}.
+\end{itemize}
 
 \end{document}

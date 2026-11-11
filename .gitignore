@@ -1,0 +1,17 @@
+# LaTeX build artifacts
+LaTeX-build/
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.fls
+*.fdb_latexmk
+
+# Minted temporary files
+_minted*/
+
+# OS / Editor files
+.vscode/
+Thumbs.db
+.DS_Store
