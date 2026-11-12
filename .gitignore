@@ -10,8 +10,10 @@ LaTeX-build/
 
 # Minted temporary files
 _minted*/
+*.minted
 
 # OS / Editor files
-.vscode/
+.vscode/*
+!.vscode/settings.json
 Thumbs.db
 .DS_Store

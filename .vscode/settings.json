@@ -1,0 +1,11 @@
+{
+    "latex-workshop.latex.rootFile.useSubFile": false,
+    "latex-workshop.latex.rootFile.doNotPrompt": true,
+    "latex-workshop.latex.search.rootFiles.include": [
+        "HW.tex",
+        "README.tex"
+    ],
+    "latex-workshop.latex.search.rootFiles.exclude": [
+        "**/Q-A/**"
+    ]
+}

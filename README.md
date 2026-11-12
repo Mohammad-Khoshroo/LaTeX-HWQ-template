@@ -89,6 +89,33 @@ To adapt this template to your course, configure the metadata variables in your 
 
 ---
 
+## 📁 Subfiles & Multi-File Architecture
+
+This template utilizes the `subfiles` package so large assignments can be organized into modular question files inside `Q-A/` (e.g., `Q-A/Q1.tex`, `Q-A/Q2.tex`) and combined seamlessly into `HW.tex`.
+
+### 🎯 Always Compiling the Master Document (`HW.tex`)
+
+When editing an isolated subfile inside `Q-A/`, TeX editors (such as VS Code with LaTeX Workshop or TeXworks) may attempt to compile only that individual subfile rather than the master `HW.tex` document, which can cause missing-header or relative-path errors.
+
+To ensure your editor **always compiles the master `HW.tex`** regardless of which question file is currently active:
+
+1. **Magic Root Comment (Universal):**
+   Every subfile in `Q-A/` starts with a standard TeX magic comment pointing to the parent root:
+   ```latex
+   %! TEX root = ../HW.tex
+   ```
+   All files in `Q-A/` in this repository are pre-configured with this line.
+
+2. **VS Code LaTeX Workshop Configuration:**
+   Add the following options to your `.vscode/settings.json` or User Settings:
+   ```json
+   "latex-workshop.latex.rootFile.useSubFile": false,
+   "latex-workshop.latex.rootFile.doNotPrompt": true
+   ```
+   This tells LaTeX Workshop to ignore standalone subfile builds and always invoke the compiler on `HW.tex`. A bundled `.vscode/settings.json` is included in this repository.
+
+---
+
 ## Code Listings with Minted
 
 Use the `minted` package to embed syntax-highlighted code. When working inside a Persian environment, wrap the code inside `\LRE{...}`:
@@ -168,7 +195,9 @@ For local development with the [LaTeX Workshop](https://marketplace.visualstudio
        "tools": ["xelatex", "xelatex"]
      }
    ],
-   "latex-workshop.latex.outDir": "%DIR%/LaTeX-build"
+   "latex-workshop.latex.outDir": "%DIR%/LaTeX-build",
+   "latex-workshop.latex.rootFile.useSubFile": false,
+   "latex-workshop.latex.rootFile.doNotPrompt": true
    ```
    > [!IMPORTANT]
    > Ensure that the recipe runs `xelatex` twice (`["xelatex", "xelatex"]`) so `minted` generates and embeds code snippets on the second pass.
