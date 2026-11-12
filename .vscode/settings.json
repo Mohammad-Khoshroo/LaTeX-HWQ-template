@@ -1,6 +1,7 @@
 {
     "latex-workshop.latex.rootFile.useSubFile": false,
     "latex-workshop.latex.rootFile.doNotPrompt": true,
+    "latex-workshop.latex.build.rootfileInStatus": true,
     "latex-workshop.latex.search.rootFiles.include": [
         "HW.tex",
         "README.tex"
