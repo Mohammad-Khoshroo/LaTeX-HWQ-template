@@ -162,6 +162,40 @@ Overleaf provides a full, pre-configured TeX Live cloud environment without requ
 4. In the Overleaf **Menu**, set **Main document** to `HW.tex` (or `README.tex`).
 5. Click **Recompile**. All Persian fonts bundled in `Fonts/` are loaded seamlessly!
 
+#### Multi-Assignment & Collaborative Setup on Overleaf
+
+When managing multiple homework assignments (e.g., `HW1`, `HW2`, `HW3`) in a single shared Overleaf project, **do not duplicate the core assets into every homework subfolder**. Instead, use a clean **shared-root structure**:
+
+1. **Keep shared assets in the project root directory (once only):**
+   * `latexmkrc`
+   * `homework.cls`
+   * `Fonts/`
+   * `Background/`
+
+2. **Organize assignments into clean subfolders:**
+   ```text
+   / (Overleaf Project Root)
+   ├── latexmkrc
+   ├── homework.cls
+   ├── Fonts/
+   ├── Background/
+   ├── HW1/
+   │   ├── HW.tex
+   │   └── Q-A/
+   │       ├── Q1.tex
+   │       └── Q2.tex
+   └── HW2/
+       ├── HW.tex
+       └── Q-A/
+           ├── Q1.tex
+           └── Q2.tex
+   ```
+
+3. **Compiling specific assignments in Overleaf:**
+   * Open the Overleaf **Menu** (top-left corner).
+   * In the **Main document** dropdown, select the target homework's master file (e.g., `HW1/HW.tex` or `HW2/HW.tex`).
+   * Click **Recompile**. Overleaf will compile that assignment using the shared fonts and class file from the root!
+
 ---
 
 ### 2. Visual Studio Code + LaTeX Workshop
