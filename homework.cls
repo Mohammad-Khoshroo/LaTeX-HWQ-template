@@ -388,29 +388,29 @@
       % ============================================================
       \noindent
       \makebox[\linewidth][c]{%
-        \begin{minipage}{\dimexpr\linewidth + 2.4cm\relax}%
+        \begin{minipage}{\dimexpr\linewidth + 2.6cm\relax}%
           \noindent
-          \begin{minipage}[c]{0.24\linewidth}
+          \begin{minipage}[c]{0.23\linewidth}
             \raggedright
-            \raisebox{4.5mm}{%
+            \raisebox{3.2mm}{%
               \includegraphics[height=2.0cm,keepaspectratio]{\hwBgPath utlogo}%
               \hspace{2.5mm}%
               \includegraphics[height=2.0cm,keepaspectratio]{\hwBgPath eng_logo}%
             }%
           \end{minipage}%
           \hfill
-          \begin{minipage}[c]{0.74\linewidth}
+          \begin{minipage}[c]{0.75\linewidth}
             \noindent
-            {\textbf{\Large \eventclass{}}}%
+            {\textbf{\LARGE \eventclass{}}}%
             \hfill
-            {\textbf{\Large \eventtype{} \eventnum{}}}
+            {\textbf{\LARGE \eventtype{} \eventnum{}}}
 
-            \par\vspace{3mm}%
+            \par\vspace{0.6mm}%
             \rule{\linewidth}{0.9pt}%
-            \par\vspace{3mm}%
+            \par\vspace{2.5mm}%
 
             \noindent
-            \begin{minipage}[t]{0.36\linewidth}
+            \begin{minipage}[t]{0.58\linewidth}
               \raggedleft
               \normalsize
               \ifdefined\eventinstructor
@@ -419,9 +419,23 @@
                   \textbf{\ifdefined\eventinstructortype\eventinstructortype\else مدرس\fi:} \eventinstructor{}%
                 \fi
               \fi
+              \par\vspace{1.8mm}%
+              \ifdefined\eventdatetype\eventdatetype\else آخرین مهلت تحویل:\fi%
+              \space
+              \ifdefined\eventDeadlineDay\eventDeadlineDay\fi%
+              \space
+              \ifdefined\eventDeadlineMonth\eventDeadlineMonth\fi%
+              \space
+              \ifdefined\eventDeadlineYear\eventDeadlineYear\fi%
+              \ifdefined\eventDeadlineHour
+                \ifx\eventDeadlineHour\@empty
+                \else
+                  ، ساعت \hbox{\setlatin\eventDeadlineHour{}}%
+                \fi
+              \fi
             \end{minipage}%
             \hfill
-            \begin{minipage}[t]{0.62\linewidth}
+            \begin{minipage}[t]{0.40\linewidth}
               \raggedright
               \normalsize
               \textbf{\ifdefined\eventcntrbstype\eventcntrbstype\else طراحان\fi:}%
@@ -434,20 +448,6 @@
                 \fi
               \else
                 {\textcolor{magenta!85!black}{\eventcntrbs{}}}%
-              \fi
-              \par\vspace{2mm}%
-              \ifdefined\eventdatetype\eventdatetype\else مهلت تحویل:\fi%
-              \space
-              \ifdefined\eventDeadlineDay\eventDeadlineDay\fi%
-              \space
-              \ifdefined\eventDeadlineMonth\eventDeadlineMonth\fi%
-              \space
-              \ifdefined\eventDeadlineYear\eventDeadlineYear\fi%
-              \ifdefined\eventDeadlineHour
-                \ifx\eventDeadlineHour\@empty
-                \else
-                  ، ساعت \hbox{\setlatin\eventDeadlineHour{}}%
-                \fi
               \fi
             \end{minipage}%
           \end{minipage}%
