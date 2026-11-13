@@ -7,6 +7,7 @@ LaTeX-build/
 *.toc
 *.fls
 *.fdb_latexmk
+*.xdv
 
 # Minted temporary files
 _minted*/

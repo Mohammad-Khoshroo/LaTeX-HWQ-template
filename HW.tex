@@ -41,8 +41,7 @@
 \end{document}
 
 
-% Open the HW directory to compile
-% To compile on Windows (without auxiliary files):
-% latexmk -xelatex event.tex ; latexmk -c event.tex
-% Otherwise:
-% xelatex event.tex 
+% To compile via command line:
+% latexmk HW.tex
+% Or:
+% xelatex -synctex=1 -interaction=nonstopmode -shell-escape HW.tex 
