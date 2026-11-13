@@ -187,8 +187,45 @@
 }
 \RequirePackage{ragged2e}
 \RequirePackage[extrafootnotefeatures]{xepersian}
-\settextfont[Path={Fonts/}, BoldFont={XB NiloofarBd.ttf}, BoldItalicFont={XB NiloofarBdIt.ttf}, ItalicFont={XB NiloofarIt.ttf}]{XB Niloofar.ttf}
-\setdigitfont[Path={Fonts/}, BoldFont={XB NiloofarBd.ttf}, BoldItalicFont={XB NiloofarBdIt.ttf}, ItalicFont={XB NiloofarIt.ttf}]{XB Niloofar.ttf}
+% Auto-detect Fonts directory (supports root up to 4-5 nested subfolders)
+\IfFileExists{./Fonts/XB Niloofar.ttf}{%
+  \newcommand{\hwFontPath}{./Fonts/}%
+}{%
+  \IfFileExists{../Fonts/XB Niloofar.ttf}{%
+    \newcommand{\hwFontPath}{../Fonts/}%
+  }{%
+    \IfFileExists{../../Fonts/XB Niloofar.ttf}{%
+      \newcommand{\hwFontPath}{../../Fonts/}%
+    }{%
+      \IfFileExists{../../../Fonts/XB Niloofar.ttf}{%
+        \newcommand{\hwFontPath}{../../../Fonts/}%
+      }{%
+        \newcommand{\hwFontPath}{../../../../Fonts/}%
+      }%
+    }%
+  }%
+}
+% Auto-detect Background directory (supports root up to 4-5 nested subfolders)
+\IfFileExists{./Background/eng_logo.png}{%
+  \newcommand{\hwBgPath}{./Background/}%
+}{%
+  \IfFileExists{../Background/eng_logo.png}{%
+    \newcommand{\hwBgPath}{../Background/}%
+  }{%
+    \IfFileExists{../../Background/eng_logo.png}{%
+      \newcommand{\hwBgPath}{../../Background/}%
+    }{%
+      \IfFileExists{../../../Background/eng_logo.png}{%
+        \newcommand{\hwBgPath}{../../../Background/}%
+      }{%
+        \newcommand{\hwBgPath}{../../../../Background/}%
+      }%
+    }%
+  }%
+}
+
+\settextfont[Path={\hwFontPath}, BoldFont={XB NiloofarBd.ttf}, BoldItalicFont={XB NiloofarBdIt.ttf}, ItalicFont={XB NiloofarIt.ttf}]{XB Niloofar.ttf}
+\setdigitfont[Path={\hwFontPath}, BoldFont={XB NiloofarBd.ttf}, BoldItalicFont={XB NiloofarBdIt.ttf}, ItalicFont={XB NiloofarIt.ttf}]{XB Niloofar.ttf}
 
 % Override normal section defintions
 \renewcommand{\section}[0]{\question}
@@ -327,7 +364,7 @@
 
     \noindent
     \begin{minipage}{0.2\linewidth}%
-      \picdims[width=\linewidth]{\linewidth}{5cm}{Background/eng_logo}
+      \picdims[width=\linewidth]{\linewidth}{5cm}{\hwBgPath eng_logo}
     \end{minipage}%
     \begin{minipage}{0.59\linewidth}%
       \centering
@@ -350,7 +387,7 @@
         (صفحه درس)}
     \end{minipage}%
     \begin{minipage}{0.2\linewidth}%
-      \picdims[width=0.85\linewidth]{\linewidth}{5cm}{Background/utlogo}
+      \picdims[width=0.85\linewidth]{\linewidth}{5cm}{\hwBgPath utlogo}
     \end{minipage}
     \vspace{0.3em} \hrule \vspace{.1in}%
 
