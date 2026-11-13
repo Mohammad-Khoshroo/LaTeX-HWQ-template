@@ -1,14 +1,21 @@
-# University Homework \LaTeX{} Template
+# University Homework & Quiz \LaTeX{} Template (HWQ)
 
-A general-purpose, bilingual (Persian/English) academic homework and assignment template for university courses, designed for the **University of Tehran** and adaptable to any academic institution.
+A general-purpose, bilingual (Persian/English) academic document template for university courses, designed for the **University of Tehran** and adaptable to any academic institution.
+
+This repository includes two specialized document classes:
+1. **`homework.cls`** — For comprehensive homework assignments, problem sets, and lab reports with multiple header styles.
+2. **`quiz.cls`** — For short exams, quizzes, and classroom assessments with student information fields and answer boxes.
 
 ---
 
 ## Key Features
 
-* **Course-Agnostic Architecture:** Easily adapt the template for any course (e.g., *Algorithms*, *Automata Theory*, *Operating Systems*, *Circuits*, *Machine Learning*) by updating simple metadata variables.
-* **Official Academic Header:** Built-in `\makeheader` creates an official header with faculty and university logos, course title, semester, submission deadline, and instructor/TA details.
-* **Full Bilingual Support (XePersian):** Native bidirectional typesetting with bundled high-quality Persian TrueType fonts (*XB Niloofar*, *XB Zar*, *IRLotus*, *XB Yas*) and clean `\LRE{...}` direction switching.
+* **Dual Academic Classes:**
+  * **Homework (`homework.cls`):** Supports classic banner headers (`header-type=1`) and modern side-by-side headers (`header-type=2`).
+  * **Quiz (`quiz.cls`):** Purpose-built for quizzes with student ID, name, duration, and framed answer boxes.
+* **Course-Agnostic Architecture:** Easily adapt either template for any course (*Algorithms*, *Automata Theory*, *Operating Systems*, *Discrete Mathematics*, *Machine Learning*, *Circuits*) by updating simple metadata variables.
+* **Smart Asset & Font Locator:** Automatically detects `Fonts/` and `Background/` directories up to 5 nested folder levels, allowing deep project organization without broken paths.
+* **Full Bilingual Support (XePersian):** Native bidirectional typesetting with bundled high-quality Persian TrueType fonts (*XB Niloofar*, *XB Zar*, *IRZar*, *IRLotus*, *XB Yas*) and clean `\LRE{...}` / `\setlatin` direction switching.
 * **Modular Question Management (Subfiles):** Organize complex assignments into separate question files (`Q1.tex`, `Q2.tex`) seamlessly combined via `\subfile{...}`.
 * **Solution Visibility Switch:** Toggle solutions on or off globally using the `compileanswers` boolean flag.
 * **Code Highlighting with Minted:** Typeset elegant, syntax-highlighted code blocks for Python, C/C++, Verilog, Java, and other languages.
@@ -17,38 +24,61 @@ A general-purpose, bilingual (Persian/English) academic homework and assignment 
 
 ## Repository Structure
 
-* **`homework.cls`** — The core document class:
+* **`homework.cls`** — Homework document class:
   * Originally created by [jez](https://github.com/jez/latex-homework-class).
-  * Enhanced by [Behzad Shayegh](https://github.com/BehzadShayegh), [Borna Tavasoli](https://github.com/borna-tl), and [Hesam Asadollahzadeh](https://github.com/HesamAsad) for Persian typography and custom environments.
+  * Enhanced by [Behzad Shayegh](https://github.com/BehzadShayegh), [Borna Tavasoli](https://github.com/borna-tl), and [Hesam Asadollahzadeh](https://github.com/HesamAsad) for Persian typography.
   * Adapted for FLAT by [Mehdi Jamalkhah](https://github.com/MehdiJmlkh).
-  * Further updated by [Mohammad Khoshroo](https://github.com/Mohammad-Khoshroo) for complete offline compatibility with modern TeX Live distributions.
-* **`Background/`** — High-resolution logos (University of Tehran & Faculty of Engineering).
-* **`Fonts/`** — Standard Persian TrueType fonts bundled directly in the workspace.
-* **`HW.tex`** — Master document setting course variables and loading question subfiles.
+  * Maintained & expanded by [Mohammad Khoshroo](https://github.com/Mohammad-Khoshroo) with multi-style headers, margin-extension layouts, and nested-directory font detection.
+* **`quiz.cls`** — Specialized document class for quizzes and short exams (آزمونک / کوییز):
+  * Built-in student information block (زمان پاسخگویی، نام و نام خانوادگی، شماره دانشجویی).
+  * Answer box environment (`\answerbox{...}`).
+  * Alphabetic (`alphaparts`) and Arabic (`arabicparts`) sub-item environments.
+* **`Background/`** — High-resolution logos (University of Tehran seal & Faculty of Engineering emblem).
+* **`Fonts/`** — Standard Persian TrueType fonts bundled directly in the repository (*XB Niloofar*, *XB Zar*, *IRZar*, *IRLotus*, *XB Yas*).
+* **`HW.tex`** — Master document demonstrating homework configuration with `header-type=2`.
+* **`latexmkrc`** — Universal build configuration for Overleaf and local `latexmk` XeLaTeX compilation.
 * **`LaTeX-build/`** — Dedicated output directory for compilation artifacts (`.pdf`, `.log`, `.aux`).
 
 ---
 
-## Quick Start: Configuring for Any Course
+## Homework Template (`homework.cls`)
 
-To adapt this template to your course, configure the metadata variables in your master `.tex` file:
+### Header Types
+
+The homework class supports two distinct header designs:
+
+| Header Type | Flag / Command | Description |
+| :--- | :--- | :--- |
+| **Type 1 (Classic Banner)** | `header-type=1` (Default) | Classic centered academic banner featuring Faculty emblem on the right and University seal on the left. |
+| **Type 2 (Modern Wide)** | `header-type=2` | Modern horizontal layout with prominent 2.0cm side-by-side logos on the right, bisecting dividing rule, and single-line course/instructor/deadline info utilizing the page margins. |
+
+You can set the header type in the document options or in the preamble:
+```latex
+\documentclass[12pt,largemargins,header-type=2]{homework}
+% Or dynamically:
+% \setheadertype{2}
+```
+
+### Homework Configuration Example (`HW.tex`)
 
 ```latex
-\documentclass[12pt,largemargins]{homework}
+\documentclass[12pt,largemargins,header-type=2]{homework}
 
 % --- Course & Assignment Metadata ---
-\newcommand{\eventclass}{طراحی و تحلیل الگوریتم‌ها} % Course Name
-\newcommand{\eventsemester}{پاییز ۱۴۰۵}             % Semester
-\newcommand{\eventtype}{تمرین شماره}               % Assignment Type (Homework, Quiz, Project)
-\newcommand{\eventnum}{1}                          % Assignment Number
-\newcommand{\eventcntrbs}{نام استاد / دستیار آموزشی} % Contributor or TA
-\newcommand{\hwemail}{ta-email@ut.ac.ir}           % Contact Email
+\newcommand{\eventclass}{نظریه زبان‌ها و ماشین‌ها}  % Course Title
+\newcommand{\eventsemester}{بهار ۱۴۰۵}              % Semester
+\newcommand{\eventtype}{تمرین شماره}                % Assignment Type
+\newcommand{\eventnum}{2}                           % Assignment Number
+\newcommand{\eventinstructor}{دکتر فدایی و دکتر یعقوب‌زاده} % Instructors
+\newcommand{\eventcntrbs}{محمد خوشرو}               % Contributor / TA
+\newcommand{\hwemail}{mvrkhoshroo83@ut.ac.ir}       % Contact Email
 
 % --- Submission Deadline ---
 \newcommand{\eventdatetype}{آخرین مهلت تحویل:}
-\newcommand{\eventDeadlineDay}{۲۵}
-\newcommand{\eventDeadlineMonth}{آبان}
-\newcommand{\eventDeadlineYear}{۱۴۰۵}
+\newcommand{\eventDeadlineDay}{8}
+\newcommand{\eventDeadlineMonth}{اردیبهشت}
+\newcommand{\eventDeadlineYear}{1405}
+\newcommand{\eventDeadlineHour}{23:59}              % Time (rendered as ۲۳:۵۹)
 
 % --- Toggle Solutions ---
 \newboolean{compileanswers}
@@ -57,35 +87,82 @@ To adapt this template to your course, configure the metadata variables in your 
 \begin{document}
 \makeheader
 
-\subfile{./Q1.tex}
+\subfile{Q-A/Q1.tex}
 \clearpage
-\subfile{./Q2.tex}
+\subfile{Q-A/Q2.tex}
+
+\end{document}
+```
+
+---
+
+## Quiz Template (`quiz.cls`)
+
+The `quiz.cls` class is tailored specifically for classroom quizzes, short tests, and mid-term assessments.
+
+### Quiz Configuration Example
+
+```latex
+\documentclass[12pt,largemargins]{quiz}
+
+% --- Quiz Metadata ---
+\newcommand{\eventclass}{ریاضیات گسسته}        % Course Title
+\newcommand{\eventtype}{آزمون کوتاه}           % Exam Type (default: کوییز شماره)
+\newcommand{\eventnum}{نهم}                    % Quiz Number
+\newcommand{\eventname}{نظریه اعداد}           % Topic / Chapter
+\newcommand{\eventcntrbs}{استاد: فائزه محمدی}   % Instructor / Designer
+\newcommand{\eventdatetype}{تاریخ برگزاری}      % Date Prefix
+\newcommand{\eventdate}{۱۴۰۴/۱۰/۰۷}            % Date
+\newcommand{\quiztime}{۱۵ دقیقه}               % Duration
+
+\begin{document}
+\maketitle
+
+\question
+همه‌ی اعداد طبیعی مانند $a$ و $b$ را بیابید به طوری که:
+\[
+\frac{1}{a} + \frac{1}{b} = \frac{1}{101}
+\]
+
+\answerbox{2.5cm} % Framed box for student answer
+
+\solution
+پاسخ تشریحی سوال در این بخش قرار می‌گیرد.
+
+\question*{سوال تستی / تشریحی با زیربخش}
+\begin{alphaparts}
+  \questionpart بخش اول سوال
+  \questionpart بخش دوم سوال
+\end{alphaparts}
 
 \end{document}
 ```
 
 ### Document Class Options
 
-| Option         | Description                                                                  |
-| :------------- | :--------------------------------------------------------------------------- |
-| `largemargins` | Widens page margins to provide ample space for grading remarks and comments. |
-| `newpage`      | Automatically inserts a page break (`\newpage`) before every question.       |
-| `anonymous`    | Suppresses author/contributor information for blind grading.                 |
+| Option | Classes | Description |
+| :--- | :--- | :--- |
+| `largemargins` | `homework`, `quiz` | Widens page margins to provide ample space for grading remarks and notes. |
+| `newpage` | `homework`, `quiz` | Automatically inserts a page break (`\newpage`) before every question. |
+| `anonymous` | `homework`, `quiz` | Suppresses author/contributor information for blind grading. |
+| `header-type=1\|2` | `homework` | Selects between Classic Banner (`1`) and Modern Side-by-Side (`2`) headers. |
+| `nostudentinfo` | `quiz` | Suppresses the student information block (نام، شماره دانشجویی، زمان). |
 
 ---
 
-## Question & Solution Commands
+## Question, Solution & Quiz Commands
 
-| Command / Environment                       | Description                                                                                |
-| :------------------------------------------ | :----------------------------------------------------------------------------------------- |
-| `\question`                                 | Generates a numbered question heading with a black dividing line.                          |
-| `\question*{Title}`                         | Generates a custom-titled question heading with a black dividing line.                     |
-| `\question#{Points}`                        | Generates a question heading with an allocated points badge (e.g., `سوال یک : (۱۰ نمره)`). |
-| `\solution`                                 | Creates a solution header followed by a colon.                                             |
-| `\solution*{Title}`                         | Creates a custom-titled solution header with a red dividing rule.                          |
-| `\begin{alphaparts} ... \end{alphaparts}`   | Formats sub-questions labeled as `(الف)`, `(ب)` or `(a)`, `(b)`.                           |
-| `\begin{arabicparts} ... \end{arabicparts}` | Formats sub-questions labeled as `1.1)`, `1.2)`.                                           |
-| `\answerbox{height}`                        | Creates an empty framed box for student answers.                                           |
+| Command / Environment | Class | Description |
+| :--- | :--- | :--- |
+| `\question` | Both | Generates a numbered question heading with a colored dividing line. |
+| `\question*{Title}` | Both | Generates a custom-titled question heading. |
+| `\question#{Points}` | `homework` | Generates a question heading with an allocated points badge (e.g., `سوال یک : (۱۰ نمره)`). |
+| `\solution` | Both | Creates a solution header with a red dividing rule. |
+| `\solution*{Title}` | Both | Creates a custom-titled solution header. |
+| `\answerbox{height}` | `quiz` | Creates an empty framed box of specified height for student answers. |
+| `\ExternalLink` | Both | Renders an inline external link TikZ icon. |
+| `\begin{alphaparts} ... \end{alphaparts}` | Both | Formats sub-questions labeled as `(الف)`, `(ب)` or `(a)`, `(b)`. |
+| `\begin{arabicparts} ... \end{arabicparts}` | Both | Formats sub-questions labeled as `1.1)`, `1.2)`. |
 
 ---
 
@@ -93,26 +170,22 @@ To adapt this template to your course, configure the metadata variables in your 
 
 This template utilizes the `subfiles` package so large assignments can be organized into modular question files inside `Q-A/` (e.g., `Q-A/Q1.tex`, `Q-A/Q2.tex`) and combined seamlessly into `HW.tex`.
 
-### 🎯 Always Compiling the Master Document (`HW.tex`)
+### Always Compiling the Master Document (`HW.tex`)
 
-When editing an isolated subfile inside `Q-A/`, TeX editors (such as VS Code with LaTeX Workshop or TeXworks) may attempt to compile only that individual subfile rather than the master `HW.tex` document, which can cause missing-header or relative-path errors.
-
-To ensure your editor **always compiles the master `HW.tex`** regardless of which question file is currently active:
+When editing an isolated subfile inside `Q-A/`, TeX editors may attempt to compile only that individual subfile rather than the master `HW.tex` document.
 
 1. **Magic Root Comment (Universal):**
    Every subfile in `Q-A/` starts with a standard TeX magic comment pointing to the parent root:
    ```latex
    %! TEX root = ../HW.tex
    ```
-   All files in `Q-A/` in this repository are pre-configured with this line.
-
 2. **VS Code LaTeX Workshop Configuration:**
-   Add the following options to your `.vscode/settings.json` or User Settings:
+   Add the following options to your `.vscode/settings.json`:
    ```json
    "latex-workshop.latex.rootFile.useSubFile": false,
    "latex-workshop.latex.rootFile.doNotPrompt": true
    ```
-   This tells LaTeX Workshop to ignore standalone subfile builds and always invoke the compiler on `HW.tex`. A bundled `.vscode/settings.json` is included in this repository.
+   A pre-configured `.vscode/settings.json` is included in this repository.
 
 ---
 
@@ -149,65 +222,46 @@ def solve_system(A, b):
 
 ### 1. Overleaf (Cloud — No Local Installation Required)
 
-Overleaf provides a full, pre-configured TeX Live cloud environment without requiring any local software installation on your PC:
-
-1. Compress the project folder into a `.zip` archive (be sure to exclude any local `LaTeX-build/` folder).
+1. Compress the project folder into a `.zip` archive (exclude any local `LaTeX-build/` folder).
 2. On [Overleaf](https://www.overleaf.com), click **New Project** $\rightarrow$ **Upload Project** and select your `.zip` archive.
 3. The repository includes an official `latexmkrc` file at the root:
    ```perl
    $pdf_mode = 5; # Force XeLaTeX
    $xelatex = 'xelatex -synctex=1 -interaction=nonstopmode -shell-escape %O %S';
    ```
-   This automatically instructs Overleaf's build workers to compile with **XeLaTeX** and `-shell-escape`. You can also double-check this in Overleaf's top-left **Menu** $\rightarrow$ **Compiler** $\rightarrow$ **XeLaTeX**.
-4. In the Overleaf **Menu**, set **Main document** to `HW.tex` (or `README.tex`).
+   This automatically instructs Overleaf's build workers to compile with **XeLaTeX** and `-shell-escape`.
+4. In Overleaf's top-left **Menu**, set **Main document** to `HW.tex` (or your quiz file).
 5. Click **Recompile**. All Persian fonts bundled in `Fonts/` are loaded seamlessly!
 
-#### Multi-Assignment & Collaborative Setup on Overleaf
+#### Multi-Assignment Setup on Overleaf
 
-When managing multiple homework assignments (e.g., `HW1`, `HW2`, `HW3`) in a single shared Overleaf project, **do not duplicate the core assets into every homework subfolder**. Instead, use a clean **shared-root structure**:
-
-1. **Keep shared assets in the project root directory (once only):**
-   * `latexmkrc`
-   * `homework.cls`
-   * `Fonts/`
-   * `Background/`
-
-2. **Organize assignments into clean subfolders:**
-   ```text
-   / (Overleaf Project Root)
-   ├── latexmkrc
-   ├── homework.cls
-   ├── Fonts/
-   ├── Background/
-   ├── HW1/
-   │   ├── HW.tex
-   │   └── Q-A/
-   │       ├── Q1.tex
-   │       └── Q2.tex
-   └── HW2/
-       ├── HW.tex
-       └── Q-A/
-           ├── Q1.tex
-           └── Q2.tex
-   ```
-
-3. **Compiling specific assignments in Overleaf:**
-   * Open the Overleaf **Menu** (top-left corner).
-   * In the **Main document** dropdown, select the target homework's master file (e.g., `HW1/HW.tex` or `HW2/HW.tex`).
-   * Click **Recompile**. Overleaf will compile that assignment using the shared fonts and class file from the root!
+```text
+/ (Overleaf Project Root)
+├── latexmkrc
+├── homework.cls
+├── quiz.cls
+├── Fonts/
+├── Background/
+├── HW1/
+│   ├── HW.tex
+│   └── Q-A/
+│       ├── Q1.tex
+│       └── Q2.tex
+└── Quiz1/
+    └── Quiz.tex
+```
+Thanks to the smart font locator, `homework.cls` and `quiz.cls` automatically detect root assets from any subfolder level.
 
 ---
 
 ### 2. Visual Studio Code + LaTeX Workshop
 
-For local development with the [LaTeX Workshop](https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop) extension:
-
-1. Install the **LaTeX Workshop** extension from the VS Code Extensions panel (`Ctrl + Shift + X`).
-2. Make sure Python and `pygments` are installed in your system terminal:
+1. Install the **LaTeX Workshop** extension (`Ctrl + Shift + X`).
+2. Make sure Python and `pygments` are installed:
    ```powershell
    pip install pygments
    ```
-3. Open your VS Code `settings.json` (`Ctrl + Shift + P` $\rightarrow$ `Preferences: Open User Settings (JSON)`) and configure a two-pass XeLaTeX recipe:
+3. Configure a two-pass XeLaTeX recipe in `settings.json`:
    ```json
    "latex-workshop.latex.tools": [
      {
@@ -233,30 +287,13 @@ For local development with the [LaTeX Workshop](https://marketplace.visualstudio
    "latex-workshop.latex.rootFile.useSubFile": false,
    "latex-workshop.latex.rootFile.doNotPrompt": true
    ```
-   > [!IMPORTANT]
-   > Ensure that the recipe runs `xelatex` twice (`["xelatex", "xelatex"]`) so `minted` generates and embeds code snippets on the second pass.
-4. Open `HW.tex` (or `README.tex`) and press `Ctrl + Alt + B` (or click the green Play icon in the editor title bar) to build. Click the magnifying glass icon or press `Ctrl + Alt + V` to view the PDF in the built-in tab.
+4. Open `HW.tex` (or any quiz `.tex`) and press `Ctrl + Alt + B` to build.
 
 ---
 
 ### 3. TeXworks (MiKTeX / TeX Live Default Editor)
 
-TeXworks is the standard lightweight editor bundled by default with both MiKTeX and TeX Live on Windows.
-
-1. Open `HW.tex` or `README.tex` in **TeXworks**.
-2. In the dropdown selector next to the green Play button, select **XeLaTeX** (never `pdfLaTeX`).
-3. **Configure `-shell-escape` for Minted:**
-   - Go to menu **Edit** $\rightarrow$ **Preferences** $\rightarrow$ **Typesetting**.
-   - Under the **Processing tools** section, highlight **XeLaTeX** and click **Edit**.
-   - Click the **`+`** button to add an argument: type `-shell-escape`.
-   - Use the up arrow button to move `-shell-escape` above `$synctexoption`.
-   - Click **OK** twice to save preferences.
-4. Click the green **Play** button (or press `Ctrl + T`) to compile. Click it a second time if compiling for the first time to resolve all code blocks and references.
-
----
-
-### 4. Working Without TeX Live (MiKTeX Notes)
-
-If your computer does not have the large TeX Live suite installed:
-* **MiKTeX Option:** Download and install [MiKTeX](https://miktex.org/download) (a lightweight Windows TeX distribution). During installation (or in the MiKTeX Console $\rightarrow$ Settings), ensure that **"Install missing packages on-the-fly"** is set to **Yes**. When you compile for the first time, MiKTeX will automatically download any missing packages (such as `xepersian`, `bidi`, `minted`, `subfiles`).
-* **Zero-Install Option:** If you don't want to install anything locally (no MiKTeX, no Python), simply use **Overleaf** as described above. All needed engines and packages are already available in the cloud.
+1. Open `HW.tex` or your quiz file in **TeXworks**.
+2. Select **XeLaTeX** in the engine dropdown (never `pdfLaTeX`).
+3. Add `-shell-escape` under **Edit** $\rightarrow$ **Preferences** $\rightarrow$ **Typesetting** $\rightarrow$ **XeLaTeX** arguments.
+4. Press `Ctrl + T` to compile.
