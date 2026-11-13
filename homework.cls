@@ -9,6 +9,20 @@
 \DeclareOption{newpage}{\renewcommand\@opnewpage{1}}
 \newcommand\@oplargemargins{0}
 \DeclareOption{largemargins}{\renewcommand\@oplargemargins{1}}
+
+% Header type selection (1 = classic centered, 2 = modern wide, 3 = upcoming)
+\def\@hwHeaderType{1}
+\DeclareOption{header-type=1}{\def\@hwHeaderType{1}}
+\DeclareOption{header-type=2}{\def\@hwHeaderType{2}}
+\DeclareOption{header-type=3}{\def\@hwHeaderType{3}}
+\DeclareOption{headertype=1}{\def\@hwHeaderType{1}}
+\DeclareOption{headertype=2}{\def\@hwHeaderType{2}}
+\DeclareOption{headertype=3}{\def\@hwHeaderType{3}}
+\DeclareOption{header-type-1}{\def\@hwHeaderType{1}}
+\DeclareOption{header-type-2}{\def\@hwHeaderType{2}}
+\DeclareOption{header-type-3}{\def\@hwHeaderType{3}}
+\newcommand{\setheadertype}[1]{\def\@hwHeaderType{#1}}
+
 \ProcessOptions
 
 % ----- Packages --------------------------------------------------------------
@@ -362,34 +376,129 @@
     % Don't put header on first page
     \thispagestyle{plain}
 
-    \noindent
-    \begin{minipage}{0.2\linewidth}%
-      \picdims[width=\linewidth]{\linewidth}{5cm}{\hwBgPath eng_logo}
-    \end{minipage}%
-    \begin{minipage}{0.59\linewidth}%
-      \centering
+    \ifdefined\headertype
+      \let\@hwActiveHeaderType\headertype
+    \else
+      \let\@hwActiveHeaderType\@hwHeaderType
+    \fi
 
-      {به نام خدا}
+    \ifthenelse{\equal{\@hwActiveHeaderType}{2}}{%
+      % ============================================================
+      % HEADER TYPE 2: Modern wide horizontal header
+      % ============================================================
+      \noindent
+      \parbox[c]{0.58\linewidth}{%
+        \raggedleft
+        \includegraphics[height=1.35cm,keepaspectratio]{\hwBgPath utlogo}%
+        \hspace{2.5mm}%
+        \includegraphics[height=1.35cm,keepaspectratio]{\hwBgPath eng_logo}%
+        \hspace{3mm}%
+        \raisebox{2.5mm}{\textbf{\LARGE \eventclass{}}}%
+      }%
+      \hfill
+      \parbox[c]{0.40\linewidth}{%
+        \raggedright
+        \raisebox{2.5mm}{\textbf{\LARGE \eventtype{} \eventnum{}}}%
+      }%
+      \par\vspace{3.5mm}%
+      \noindent\rule{\linewidth}{0.8pt}%
+      \par\vspace{2.5mm}%
+      \noindent
+      \begin{minipage}[t]{0.48\linewidth}%
+        \raggedleft
+        \ifdefined\eventinstructor
+          \ifx\eventinstructor\@empty
+          \else
+            \textbf{مدرس:} \eventinstructor{}%
+          \fi
+        \fi
+      \end{minipage}%
+      \hfill
+      \begin{minipage}[t]{0.50\linewidth}%
+        \raggedright
+        \textbf{\ifdefined\eventcntrbstype\eventcntrbstype\else طراحان\fi:}%
+        \space
+        \ifdefined\hwemail
+          \ifx\hwemail\@empty
+            {\color{magenta!85!black}\eventcntrbs{}}%
+          \else
+            \href{mailto:\hwemail}{\color{magenta!85!black}\eventcntrbs{}}%
+          \fi
+        \else
+          {\color{magenta!85!black}\eventcntrbs{}}%
+        \fi
+        \par\vspace{1.5mm}%
+        \eventdatetype{} \eventDeadlineDay{} \eventDeadlineMonth{} \eventDeadlineYear{}%
+        \ifdefined\eventDeadlineHour\ifx\eventDeadlineHour\@empty\else ، ساعت \eventDeadlineHour{}\fi\fi
+      \end{minipage}%
+      \par\vspace{0.3in}%
+    }{%
+    \ifthenelse{\equal{\@hwActiveHeaderType}{3}}{%
+      % ============================================================
+      % HEADER TYPE 3: (Reserved for upcoming model)
+      % ============================================================
+      % Fallback to Type 1
+      \noindent
+      \begin{minipage}{0.2\linewidth}%
+        \picdims[width=\linewidth]{\linewidth}{5cm}{\hwBgPath eng_logo}
+      \end{minipage}%
+      \begin{minipage}{0.59\linewidth}%
+        \centering
 
-      \vspace{2mm}
+        {به نام خدا}
 
-      {\LARGE  \eventclass{} - \eventsemester{}}
+        \vspace{2mm}
 
-      \vspace{4mm}
+        {\LARGE  \eventclass{} - \eventsemester{}}
 
-      {\eventtype{} \eventnum{}}
-      \vspace{2mm}
+        \vspace{4mm}
 
-      {دستیار‌ آموزشی این مجموعه:\href{mailto:\hwemail}{ \eventcntrbs{}}}
-      \vspace{2mm}
+        {\eventtype{} \eventnum{}}
+        \vspace{2mm}
 
-      {\eventdatetype{} \eventDeadlineDay{} \eventDeadlineMonth{} \eventDeadlineYear{}
-        (صفحه درس)}
-    \end{minipage}%
-    \begin{minipage}{0.2\linewidth}%
-      \picdims[width=0.85\linewidth]{\linewidth}{5cm}{\hwBgPath utlogo}
-    \end{minipage}
-    \vspace{0.3em} \hrule \vspace{.1in}%
+        {دستیار‌ آموزشی این مجموعه:\href{mailto:\hwemail}{ \eventcntrbs{}}}
+        \vspace{2mm}
+
+        {\eventdatetype{} \eventDeadlineDay{} \eventDeadlineMonth{} \eventDeadlineYear{}
+          (صفحه درس)}
+      \end{minipage}%
+      \begin{minipage}{0.2\linewidth}%
+        \picdims[width=0.85\linewidth]{\linewidth}{5cm}{\hwBgPath utlogo}
+      \end{minipage}
+      \vspace{0.3em} \hrule \vspace{.1in}%
+    }{%
+      % ============================================================
+      % HEADER TYPE 1: Classic centered header (Default)
+      % ============================================================
+      \noindent
+      \begin{minipage}{0.2\linewidth}%
+        \picdims[width=\linewidth]{\linewidth}{5cm}{\hwBgPath eng_logo}
+      \end{minipage}%
+      \begin{minipage}{0.59\linewidth}%
+        \centering
+
+        {به نام خدا}
+
+        \vspace{2mm}
+
+        {\LARGE  \eventclass{} - \eventsemester{}}
+
+        \vspace{4mm}
+
+        {\eventtype{} \eventnum{}}
+        \vspace{2mm}
+
+        {دستیار‌ آموزشی این مجموعه:\href{mailto:\hwemail}{ \eventcntrbs{}}}
+        \vspace{2mm}
+
+        {\eventdatetype{} \eventDeadlineDay{} \eventDeadlineMonth{} \eventDeadlineYear{}
+          (صفحه درس)}
+      \end{minipage}%
+      \begin{minipage}{0.2\linewidth}%
+        \picdims[width=0.85\linewidth]{\linewidth}{5cm}{\hwBgPath utlogo}
+      \end{minipage}
+      \vspace{0.3em} \hrule \vspace{.1in}%
+    }}%
 
     \renewcommand{\headrulewidth}{0.4pt}
   }
