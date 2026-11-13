@@ -384,54 +384,69 @@
 
     \ifthenelse{\equal{\@hwActiveHeaderType}{2}}{%
       % ============================================================
-      % HEADER TYPE 2: Modern wide horizontal header
+      % HEADER TYPE 2: Modern side-by-side header
       % ============================================================
       \noindent
-      \parbox[c]{0.58\linewidth}{%
-        \raggedleft
-        \includegraphics[height=1.35cm,keepaspectratio]{\hwBgPath utlogo}%
-        \hspace{2.5mm}%
-        \includegraphics[height=1.35cm,keepaspectratio]{\hwBgPath eng_logo}%
-        \hspace{3mm}%
-        \raisebox{2.5mm}{\textbf{\LARGE \eventclass{}}}%
-      }%
-      \hfill
-      \parbox[c]{0.40\linewidth}{%
+      \begin{minipage}[c]{0.17\linewidth}
         \raggedright
-        \raisebox{2.5mm}{\textbf{\LARGE \eventtype{} \eventnum{}}}%
-      }%
-      \par\vspace{3.5mm}%
-      \noindent\rule{\linewidth}{0.8pt}%
-      \par\vspace{2.5mm}%
-      \noindent
-      \begin{minipage}[t]{0.48\linewidth}%
-        \raggedleft
-        \ifdefined\eventinstructor
-          \ifx\eventinstructor\@empty
-          \else
-            \textbf{مدرس:} \eventinstructor{}%
-          \fi
-        \fi
+        \includegraphics[height=1.15cm,keepaspectratio]{\hwBgPath utlogo}%
+        \hspace{1.5mm}%
+        \includegraphics[height=1.15cm,keepaspectratio]{\hwBgPath eng_logo}%
       \end{minipage}%
       \hfill
-      \begin{minipage}[t]{0.50\linewidth}%
-        \raggedright
-        \textbf{\ifdefined\eventcntrbstype\eventcntrbstype\else طراحان\fi:}%
-        \space
-        \ifdefined\hwemail
-          \ifx\hwemail\@empty
+      \begin{minipage}[c]{0.81\linewidth}
+        \noindent
+        {\textbf{\Large \eventclass{}}}%
+        \hfill
+        {\textbf{\Large \eventtype{} \eventnum{}}}
+
+        \par\vspace{2mm}%
+        \rule{\linewidth}{0.8pt}%
+        \par\vspace{2.5mm}%
+
+        \noindent
+        \begin{minipage}[t]{0.40\linewidth}
+          \raggedleft
+          \normalsize
+          \ifdefined\eventinstructor
+            \ifx\eventinstructor\@empty
+            \else
+              \textbf{\ifdefined\eventinstructortype\eventinstructortype\else مدرس\fi:} \eventinstructor{}%
+            \fi
+          \fi
+        \end{minipage}%
+        \hfill
+        \begin{minipage}[t]{0.58\linewidth}
+          \raggedright
+          \normalsize
+          \textbf{\ifdefined\eventcntrbstype\eventcntrbstype\else طراحان\fi:}%
+          \space
+          \ifdefined\hwemail
+            \ifx\hwemail\@empty
+              {\color{magenta!85!black}\eventcntrbs{}}%
+            \else
+              \href{mailto:\hwemail}{\mbox{\color{magenta!85!black}\eventcntrbs{}}}%
+            \fi
+          \else
             {\color{magenta!85!black}\eventcntrbs{}}%
-          \else
-            \href{mailto:\hwemail}{\color{magenta!85!black}\eventcntrbs{}}%
           \fi
-        \else
-          {\color{magenta!85!black}\eventcntrbs{}}%
-        \fi
-        \par\vspace{1.5mm}%
-        \eventdatetype{} \eventDeadlineDay{} \eventDeadlineMonth{} \eventDeadlineYear{}%
-        \ifdefined\eventDeadlineHour\ifx\eventDeadlineHour\@empty\else ، ساعت \eventDeadlineHour{}\fi\fi
+          \par\vspace{1.5mm}%
+          \ifdefined\eventdatetype\eventdatetype\else مهلت تحویل:\fi%
+          \space
+          \ifdefined\eventDeadlineDay\eventDeadlineDay\fi%
+          \space
+          \ifdefined\eventDeadlineMonth\eventDeadlineMonth\fi%
+          \space
+          \ifdefined\eventDeadlineYear\eventDeadlineYear\fi%
+          \ifdefined\eventDeadlineHour
+            \ifx\eventDeadlineHour\@empty
+            \else
+              ، ساعت \hbox{\setlatin\eventDeadlineHour{}}%
+            \fi
+          \fi
+        \end{minipage}%
       \end{minipage}%
-      \par\vspace{0.3in}%
+      \par\vspace{0.35in}%
     }{%
     \ifthenelse{\equal{\@hwActiveHeaderType}{3}}{%
       % ============================================================
