@@ -387,25 +387,27 @@
       % HEADER TYPE 2: Modern side-by-side header
       % ============================================================
       \noindent
-      \begin{minipage}[c]{0.17\linewidth}
+      \begin{minipage}[c]{0.23\linewidth}
         \raggedright
-        \includegraphics[height=1.15cm,keepaspectratio]{\hwBgPath utlogo}%
-        \hspace{1.5mm}%
-        \includegraphics[height=1.15cm,keepaspectratio]{\hwBgPath eng_logo}%
+        \raisebox{4.5mm}{%
+          \includegraphics[height=1.45cm,keepaspectratio]{\hwBgPath utlogo}%
+          \hspace{2mm}%
+          \includegraphics[height=1.45cm,keepaspectratio]{\hwBgPath eng_logo}%
+        }%
       \end{minipage}%
       \hfill
-      \begin{minipage}[c]{0.81\linewidth}
+      \begin{minipage}[c]{0.75\linewidth}
         \noindent
         {\textbf{\Large \eventclass{}}}%
         \hfill
         {\textbf{\Large \eventtype{} \eventnum{}}}
 
-        \par\vspace{2mm}%
+        \par\vspace{2.5mm}%
         \rule{\linewidth}{0.8pt}%
         \par\vspace{2.5mm}%
 
         \noindent
-        \begin{minipage}[t]{0.40\linewidth}
+        \begin{minipage}[t]{0.48\linewidth}
           \raggedleft
           \normalsize
           \ifdefined\eventinstructor
@@ -416,7 +418,7 @@
           \fi
         \end{minipage}%
         \hfill
-        \begin{minipage}[t]{0.58\linewidth}
+        \begin{minipage}[t]{0.50\linewidth}
           \raggedright
           \normalsize
           \textbf{\ifdefined\eventcntrbstype\eventcntrbstype\else طراحان\fi:}%
