@@ -360,21 +360,29 @@
 \pagestyle{empty}
 \pagestyle{fancy}
 
-%\if\@opanon%
-\ifthenelse{\equal{\@opanon}{0}}{%
-  \newcommand{\makeheader}[0]{%
+\newcommand{\makeheader}[0]{%
+  \ifthenelse{\equal{\@opanon}{1}}{%
+    % Anonymous Header
+    \thispagestyle{plain}%
+    \begin{center}%
+      {\LARGE \ifdefined\eventclass\eventclass\fi\ifdefined\eventnum{} - \ifdefined\eventtype\eventtype\else تمرین شماره\fi{} \eventnum\fi}\par\vspace{2mm}%
+      {\normalsize \ifdefined\eventdatetype\eventdatetype\else آخرین مهلت تحویل:\fi{} \ifdefined\eventdate\eventdate\else\ifdefined\eventDeadlineDay\eventDeadlineDay{} \eventDeadlineMonth{} \eventDeadlineYear{}\fi\fi}%
+    \end{center}%
+    \vspace{0.2in}%
+    \renewcommand{\headrulewidth}{0.4pt}%
+  }{%
     % Setup header
-    \setlength{\headheight}{15.2pt}
-    \setlength{\headsep}{0.2in}
-    \lhead{\eventclass{}}%
-    \rhead{\eventtype{} \eventnum{}}%
+    \setlength{\headheight}{15.2pt}%
+    \setlength{\headsep}{0.2in}%
+    \lhead{\ifdefined\eventclass\eventclass\fi}%
+    \rhead{\ifdefined\eventtype\eventtype\else تمرین شماره\fi{} \ifdefined\eventnum\eventnum\fi}%
 
     % Setup hrule in header
-    \renewcommand{\headrulewidth}{0pt}
-    \headrule{}
+    \renewcommand{\headrulewidth}{0pt}%
+    \headrule{}%
 
     % Don't put header on first page
-    \thispagestyle{plain}
+    \thispagestyle{plain}%
 
     \ifdefined\headertype
       \let\@hwActiveHeaderType\headertype
@@ -401,9 +409,9 @@
           \hfill
           \begin{minipage}[c]{0.75\linewidth}
             \noindent
-            {\textbf{\LARGE \eventclass{}}}%
+            {\textbf{\LARGE \ifdefined\eventclass\eventclass\fi}}%
             \hfill
-            {\textbf{\LARGE \eventtype{} \eventnum{}}}
+            {\textbf{\LARGE \ifdefined\eventtype\eventtype\else تمرین شماره\fi{} \ifdefined\eventnum\eventnum\fi}}
 
             \par\vspace{0.6mm}%
             \rule{\linewidth}{0.9pt}%
@@ -422,15 +430,17 @@
               \par\vspace{1.8mm}%
               \ifdefined\eventdatetype\eventdatetype\else آخرین مهلت تحویل:\fi%
               \space
-              \ifdefined\eventDeadlineDay\eventDeadlineDay\fi%
-              \space
-              \ifdefined\eventDeadlineMonth\eventDeadlineMonth\fi%
-              \space
-              \ifdefined\eventDeadlineYear\eventDeadlineYear\fi%
-              \ifdefined\eventDeadlineHour
-                \ifx\eventDeadlineHour\@empty
-                \else
-                  ، ساعت \hbox{\setlatin\eventDeadlineHour{}}%
+              \ifdefined\eventdate
+                \eventdate{}%
+              \else
+                \ifdefined\eventDeadlineDay\eventDeadlineDay{}\space\fi
+                \ifdefined\eventDeadlineMonth\eventDeadlineMonth{}\space\fi
+                \ifdefined\eventDeadlineYear\eventDeadlineYear{}\fi
+                \ifdefined\eventDeadlineHour
+                  \ifx\eventDeadlineHour\@empty
+                  \else
+                    ، ساعت \hbox{\setlatin\eventDeadlineHour{}}%
+                  \fi
                 \fi
               \fi
             \end{minipage}%
@@ -442,12 +452,12 @@
               \space
               \ifdefined\hwemail
                 \ifx\hwemail\@empty
-                  {\textcolor{magenta!85!black}{\eventcntrbs{}}}%
+                  {\textcolor{magenta!85!black}{\ifdefined\eventcntrbs\eventcntrbs\fi}}%
                 \else
-                  \href{mailto:\hwemail}{\textcolor{magenta!85!black}{\eventcntrbs{}}}%
+                  \href{mailto:\hwemail}{\textcolor{magenta!85!black}{\ifdefined\eventcntrbs\eventcntrbs\fi}}%
                 \fi
               \else
-                {\textcolor{magenta!85!black}{\eventcntrbs{}}}%
+                {\textcolor{magenta!85!black}{\ifdefined\eventcntrbs\eventcntrbs\fi}}%
               \fi
             \end{minipage}%
           \end{minipage}%
@@ -471,18 +481,44 @@
 
         \vspace{2mm}
 
-        {\LARGE  \eventclass{} - \eventsemester{}}
+        {\LARGE \ifdefined\eventclass\eventclass\fi\ifdefined\eventsemester\ifx\eventsemester\@empty\else{} - \eventsemester\fi\fi}
 
         \vspace{4mm}
 
-        {\eventtype{} \eventnum{}}
+        {\ifdefined\eventtype\eventtype\else تمرین شماره\fi{} \ifdefined\eventnum\eventnum\fi}
         \vspace{2mm}
 
-        {دستیار‌ آموزشی این مجموعه:\href{mailto:\hwemail}{ \eventcntrbs{}}}
-        \vspace{2mm}
+        \ifdefined\eventcntrbs
+          \ifx\eventcntrbs\@empty\else
+            {دستیار آموزشی این مجموعه:\space%
+            \ifdefined\hwemail
+              \ifx\hwemail\@empty
+                \eventcntrbs{}%
+              \else
+                \href{mailto:\hwemail}{\eventcntrbs{}}%
+              \fi
+            \else
+              \eventcntrbs{}%
+            \fi
+            }
+            \vspace{2mm}
+          \fi
+        \fi
 
-        {\eventdatetype{} \eventDeadlineDay{} \eventDeadlineMonth{} \eventDeadlineYear{}
-          (صفحه درس)}
+        \ifdefined\eventdatetype\eventdatetype\else آخرین مهلت تحویل:\fi\space
+        \ifdefined\eventdate
+          \eventdate{}%
+        \else
+          \ifdefined\eventDeadlineDay\eventDeadlineDay{}\space\fi
+          \ifdefined\eventDeadlineMonth\eventDeadlineMonth{}\space\fi
+          \ifdefined\eventDeadlineYear\eventDeadlineYear{}\fi
+          \ifdefined\eventDeadlineHour
+            \ifx\eventDeadlineHour\@empty\else
+              ، ساعت \hbox{\setlatin\eventDeadlineHour{}}%
+            \fi
+          \fi
+        \fi
+        \ifdefined\eventcourselink\space(\href{\eventcourselink}{صفحه درس})\fi
       \end{minipage}%
       \begin{minipage}{0.2\linewidth}%
         \picdims[width=0.85\linewidth]{\linewidth}{5cm}{\hwBgPath utlogo}
@@ -503,18 +539,44 @@
 
         \vspace{2mm}
 
-        {\LARGE  \eventclass{} - \eventsemester{}}
+        {\LARGE \ifdefined\eventclass\eventclass\fi\ifdefined\eventsemester\ifx\eventsemester\@empty\else{} - \eventsemester\fi\fi}
 
         \vspace{4mm}
 
-        {\eventtype{} \eventnum{}}
+        {\ifdefined\eventtype\eventtype\else تمرین شماره\fi{} \ifdefined\eventnum\eventnum\fi}
         \vspace{2mm}
 
-        {دستیار‌ آموزشی این مجموعه:\href{mailto:\hwemail}{ \eventcntrbs{}}}
-        \vspace{2mm}
+        \ifdefined\eventcntrbs
+          \ifx\eventcntrbs\@empty\else
+            {دستیار آموزشی این مجموعه:\space%
+            \ifdefined\hwemail
+              \ifx\hwemail\@empty
+                \eventcntrbs{}%
+              \else
+                \href{mailto:\hwemail}{\eventcntrbs{}}%
+              \fi
+            \else
+              \eventcntrbs{}%
+            \fi
+            }
+            \vspace{2mm}
+          \fi
+        \fi
 
-        {\eventdatetype{} \eventDeadlineDay{} \eventDeadlineMonth{} \eventDeadlineYear{}
-          (صفحه درس)}
+        \ifdefined\eventdatetype\eventdatetype\else آخرین مهلت تحویل:\fi\space
+        \ifdefined\eventdate
+          \eventdate{}%
+        \else
+          \ifdefined\eventDeadlineDay\eventDeadlineDay{}\space\fi
+          \ifdefined\eventDeadlineMonth\eventDeadlineMonth{}\space\fi
+          \ifdefined\eventDeadlineYear\eventDeadlineYear{}\fi
+          \ifdefined\eventDeadlineHour
+            \ifx\eventDeadlineHour\@empty\else
+              ، ساعت \hbox{\setlatin\eventDeadlineHour{}}%
+            \fi
+          \fi
+        \fi
+        \ifdefined\eventcourselink\space(\href{\eventcourselink}{صفحه درس})\fi
       \end{minipage}%
       \begin{minipage}{0.2\linewidth}%
         \picdims[width=0.85\linewidth]{\linewidth}{5cm}{\hwBgPath utlogo}
@@ -522,14 +584,14 @@
       \vspace{0.3em} \hrule \vspace{.1in}%
     }}%
 
-    \renewcommand{\headrulewidth}{0.4pt}
-  }
+    \renewcommand{\headrulewidth}{0.4pt}%
+  }%
+}
 
-}%
+\renewcommand{\figurename}{شکل}
 
-{%
-  \renewcommand{\figurename}{شکل}
-
+\AtBeginDocument{%
+  \renewcommand{\maketitle}[0]{\makeheader}%
 }
 
 % ----- For usage with pandoc converted documents -----------------------------

@@ -110,16 +110,42 @@ Detailed solution is written here.
 \end{document}
 \end{Verbatim}
 
-\section{Question \& Solution Commands}
+\section{Metadata Variables Reference}
 \begin{itemize}[leftmargin=1.5em, itemsep=0.2em]
+    \item \texttt{\textbackslash eventclass\{...\}} --- Course title (e.g. Automata Theory, AI).
+    \item \texttt{\textbackslash eventtype\{...\}} --- Assignment or quiz type (e.g. Homework, Quiz, Project).
+    \item \texttt{\textbackslash eventnum\{...\}} --- Assignment or quiz number.
+    \item \texttt{\textbackslash eventname\{...\}} --- Topic or chapter subtitle.
+    \item \texttt{\textbackslash eventsemester\{...\}} --- Academic semester (e.g. Spring 2026).
+    \item \texttt{\textbackslash eventinstructor\{...\}} --- Instructor name(s).
+    \item \texttt{\textbackslash eventinstructortype\{...\}} --- Custom instructor label prefix (default: Instructor).
+    \item \texttt{\textbackslash eventcntrbs\{...\}} --- Teaching assistants, designers, or authors.
+    \item \texttt{\textbackslash eventcntrbstype\{...\}} --- Custom contributor label prefix (default: Designers).
+    \item \texttt{\textbackslash hwemail\{...\}} --- Contact email address (automatically wrapped in a \texttt{mailto:} link).
+    \item \texttt{\textbackslash eventdatetype\{...\}} --- Date label prefix (default: Due Date: or Date:).
+    \item \texttt{\textbackslash eventdate\{...\}} --- Unified date string.
+    \item \texttt{\textbackslash eventDeadlineDay}, \texttt{\textbackslash eventDeadlineMonth}, \texttt{\textbackslash eventDeadlineYear}, \texttt{\textbackslash eventDeadlineHour} --- Granular deadline components.
+    \item \texttt{\textbackslash eventcourselink\{...\}} --- URL pointing to the course web page.
+    \item \texttt{\textbackslash quiztime\{...\}} --- Quiz duration / allowed response time (e.g. 15 Minutes).
+    \item \texttt{\textbackslash quiztimelabel}, \texttt{\textbackslash studentnamelabel}, \texttt{\textbackslash studentidlabel} --- Customizable field labels for quizzes.
+\end{itemize}
+
+\section{Question, Solution \& Utility Commands}
+\begin{itemize}[leftmargin=1.5em, itemsep=0.2em]
+    \item \texttt{\textbackslash makeheader} or \texttt{\textbackslash maketitle} --- Generates the official course header box (both classes).
+    \item \texttt{\textbackslash setheadertype\{1|2\}} --- Dynamically switches header style at runtime (\texttt{homework.cls}).
     \item \texttt{\textbackslash question} --- Starts a numbered question with a colored dividing rule.
     \item \texttt{\textbackslash question*\{Title\}} --- Starts a question header with a custom title string.
     \item \texttt{\textbackslash question\#\{Points\}} --- Creates a question header with point allocation badge (\texttt{homework.cls}).
     \item \texttt{\textbackslash solution} --- Creates a solution header with a red dividing rule.
     \item \texttt{\textbackslash solution*\{Title\}} --- Custom solution header.
-    \item \texttt{\textbackslash answerbox\{height\}} --- Generates an empty framed box for student answers (\texttt{quiz.cls}).
+    \item \texttt{\textbackslash answerbox\{height\}} --- Generates an empty framed box of specified height for student answers (both classes).
     \item \texttt{\textbackslash ExternalLink} --- Renders an inline external link TikZ icon.
-    \item \texttt{alphaparts} / \texttt{arabicparts} --- Sub-question lists for (a), (b) or 1.1, 1.2 numbering.
+    \item \texttt{\textbackslash RN\{number\}} --- Converts an integer to uppercase Roman numerals (e.g. \texttt{\textbackslash RN\{4\}} gives IV).
+    \item \texttt{alphaparts} / \texttt{arabicparts} --- Sub-question environments for (a), (b) or 1.1, 1.2 numbering.
+    \item \texttt{\textbackslash questiontype} / \texttt{\textbackslash solutiontype} --- Prefix redefinitions for questions and solutions.
+    \item \texttt{\textbackslash writtensection} --- Section numbering prefix (e.g. \texttt{5} for 5.1, 5.2).
+    \item \texttt{\textbackslash ifcompileanswers} --- Boolean conditional for toggling solution visibility.
 \end{itemize}
 
 \section{Code Listings with Minted}
@@ -133,5 +159,13 @@ def solve_system(A, b):
     residual = np.linalg.norm(np.dot(A, x) - b)
     return x, residual
 \end{Verbatim}
+
+\section{Subfiles \& Build Setup}
+The template supports modular multi-file assignments with the \texttt{subfiles} package:
+\begin{itemize}[leftmargin=1.5em, itemsep=0.2em]
+    \item Always set \texttt{\%!TEX root = ../HW.tex} at the top of question files in \texttt{Q-A/}.
+    \item In VS Code LaTeX Workshop, keep \texttt{"latex-workshop.latex.rootFile.useSubFile": false} so the master document is always built.
+    \item Use \texttt{latexmkrc} for automatic XeLaTeX configuration on Overleaf.
+\end{itemize}
 
 \end{document}

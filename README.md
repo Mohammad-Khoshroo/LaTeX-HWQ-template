@@ -144,25 +144,63 @@ The `quiz.cls` class is tailored specifically for classroom quizzes, short tests
 | :--- | :--- | :--- |
 | `largemargins` | `homework`, `quiz` | Widens page margins to provide ample space for grading remarks and notes. |
 | `newpage` | `homework`, `quiz` | Automatically inserts a page break (`\newpage`) before every question. |
-| `anonymous` | `homework`, `quiz` | Suppresses author/contributor information for blind grading. |
+| `anonymous` | `homework`, `quiz` | Suppresses author and contributor information for blind grading. |
 | `header-type=1\|2` | `homework` | Selects between Classic Banner (`1`) and Modern Side-by-Side (`2`) headers. |
-| `nostudentinfo` | `quiz` | Suppresses the student information block (نام، شماره دانشجویی، زمان). |
+| `nostudentinfo` | `quiz` | Suppresses the student information block (نام، شماره دانشجویی، زمان پاسخگویی). |
 
 ---
 
-## Question, Solution & Quiz Commands
+## 📋 Comprehensive Metadata Variables Reference
+
+The following variables can be customized in the preamble of your document:
+
+| Variable | Target Class | Default / Fallback | Description |
+| :--- | :--- | :--- | :--- |
+| `\eventclass{...}` | Both | None (Optional) | Course title (e.g. `نظریه زبان‌ها و ماشین‌ها`, `مبانی هوش مصنوعی`). |
+| `\eventtype{...}` | Both | `تمرین شماره` (HW) / `کوییز شماره` (Quiz) | Assignment type (e.g., `تمرین شماره`, `آزمونک کوتاه`, `پروژه`). |
+| `\eventnum{...}` | Both | None (Optional) | Assignment or quiz number (e.g., `1`, `2`, `۹`). |
+| `\eventname{...}` | Both | Empty | Subtitle, topic, or chapter name (e.g., `آتوماتای متن‌های قطعی`, `نظریه اعداد`). |
+| `\eventsemester{...}` | `homework` | Empty | Academic semester term (e.g., `بهار ۱۴۰۵`). |
+| `\eventinstructor{...}` | `homework` | Empty | Name of the course instructor(s) (e.g., `دکتر فدایی و دکتر یعقوب‌زاده`). |
+| `\eventinstructortype{...}` | `homework` | `مدرس` | Custom label prefix for the instructor field. |
+| `\eventcntrbs{...}` | Both | Empty | Teaching assistant(s), question designer(s), or author name(s). |
+| `\eventcntrbstype{...}` | `homework` | `طراحان` (Type 2) / `دستیار آموزشی این مجموعه` (Type 1) | Custom label prefix for the contributors field. |
+| `\hwemail{...}` | `homework` | Empty | Contact email address (automatically wrapped in a clickable `mailto:` link). |
+| `\eventdatetype{...}` | Both | `آخرین مهلت تحویل:` (HW) / `تاریخ برگزاری:` (Quiz) | Custom label prefix for the deadline or exam date. |
+| `\eventdate{...}` | Both | Empty | Unified date string (e.g., `۲۵ آبان ۱۴۰۵`). Recommended for simple setup. |
+| `\eventDeadlineDay{...}` | `homework` | Empty | Day component of submission deadline. |
+| `\eventDeadlineMonth{...}` | `homework` | Empty | Month component of submission deadline. |
+| `\eventDeadlineYear{...}` | `homework` | Empty | Year component of submission deadline. |
+| `\eventDeadlineHour{...}` | `homework` | Empty | Submission hour (e.g., `23:59`). Automatically rendered in Latin digits. |
+| `\eventcourselink{...}` | `homework` | Empty | Hyperlink URL pointing to the course web page or LMS portal. |
+| `\quiztime{...}` / `\eventtime{...}` | `quiz` | Empty | Exam duration or allowed response time (e.g., `۱۵ دقیقه`). |
+| `\quiztimelabel{...}` | `quiz` | `زمان پاسخگویی:` | Custom label prefix for the quiz duration line. |
+| `\studentnamelabel{...}` | `quiz` | `نام و نام خانوادگی:` | Custom label for the student name line. |
+| `\studentidlabel{...}` | `quiz` | `شماره دانشجویی:` | Custom label for the student ID line. |
+
+---
+
+## 🛠️ Commands, Environments & Customization Reference
 
 | Command / Environment | Class | Description |
 | :--- | :--- | :--- |
-| `\question` | Both | Generates a numbered question heading with a colored dividing line. |
-| `\question*{Title}` | Both | Generates a custom-titled question heading. |
-| `\question#{Points}` | `homework` | Generates a question heading with an allocated points badge (e.g., `سوال یک : (۱۰ نمره)`). |
-| `\solution` | Both | Creates a solution header with a red dividing rule. |
-| `\solution*{Title}` | Both | Creates a custom-titled solution header. |
-| `\answerbox{height}` | `quiz` | Creates an empty framed box of specified height for student answers. |
-| `\ExternalLink` | Both | Renders an inline external link TikZ icon. |
+| `\makeheader` or `\maketitle` | Both | Generates the official course header box. Both commands work identically. |
+| `\setheadertype{1\|2}` | `homework` | Dynamically switches header style at runtime (`1` = Banner, `2` = Modern Side-by-Side). |
+| `\question` | Both | Starts a numbered question heading with a colored dividing rule. |
+| `\question*{Title}` | Both | Starts a custom-titled question heading with a colored dividing rule. |
+| `\question#{Points}` | `homework` | Generates a question heading with an allocated points badge (e.g., `سؤال ۱ : (۱۵ نمره)`). |
+| `\solution` | Both | Creates a solution heading with a red dividing rule. |
+| `\solution*{Title}` | Both | Creates a custom-titled solution heading. |
+| `\answerbox{height}` | Both | Creates an empty framed box of specified height (e.g. `\answerbox{3.5cm}`) for student answers. |
+| `\ExternalLink` | Both | Renders an inline external link TikZ icon for problem references. |
+| `\RN{number}` | Both | Converts an integer to uppercase Roman numerals (e.g., `\RN{4}` produces `IV`). |
 | `\begin{alphaparts} ... \end{alphaparts}` | Both | Formats sub-questions labeled as `(الف)`, `(ب)` or `(a)`, `(b)`. |
 | `\begin{arabicparts} ... \end{arabicparts}` | Both | Formats sub-questions labeled as `1.1)`, `1.2)`. |
+| `\questionpart` | Both | Item command used inside `alphaparts` or `arabicparts` lists. |
+| `\questiontype` | Both | Macro defining the question prefix (default: `سؤال`). Override via `\renewcommand{\questiontype}{مسئله}`. |
+| `\solutiontype` | Both | Macro defining the solution prefix (default: `پاسخ`). Override via `\renewcommand{\solutiontype}{حل}`. |
+| `\writtensection` | Both | Section number prefix (default: `0`). Set to e.g. `3` to number questions as `سؤال ۳.۱`. |
+| `\ifcompileanswers` | `homework` | Conditional boolean switch. Wrap solutions inside `\ifcompileanswers ... \fi` to toggle visibility. |
 
 ---
 
