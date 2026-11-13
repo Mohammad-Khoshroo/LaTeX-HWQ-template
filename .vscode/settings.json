@@ -1,4 +1,28 @@
 {
+    "latex-workshop.latex.outDir": "%DIR%/LaTeX-build",
+    "latex-workshop.latex.tools": [
+        {
+            "name": "xelatex",
+            "command": "xelatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-output-directory=%OUTDIR%",
+                "-file-line-error",
+                "-shell-escape",
+                "%DOC%"
+            ]
+        }
+    ],
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "Compile with XeLaTeX",
+            "tools": [
+                "xelatex",
+                "xelatex"
+            ]
+        }
+    ],
     "latex-workshop.latex.rootFile.useSubFile": false,
     "latex-workshop.latex.rootFile.doNotPrompt": true,
     "latex-workshop.latex.build.rootfileInStatus": true,
