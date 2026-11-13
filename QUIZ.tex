@@ -1,0 +1,45 @@
+\documentclass[12pt,largemargins]{quiz}
+
+\usepackage{tikz}
+\usepackage{graphicx}
+\usetikzlibrary{automata, positioning, arrows.meta, calc, fit}
+
+% --- Quiz Metadata ---
+\newcommand{\eventclass}{نظریه زبان‌ها و ماشین‌ها}
+\newcommand{\eventtype}{آزمون کوتاه}           % یا: کوییز شماره
+\newcommand{\eventnum}{۱}
+\newcommand{\eventname}{آتوماتای متناهی قطعی (DFA)}
+\newcommand{\eventcntrbs}{استاد: دکتر فدایی}
+\newcommand{\eventdatetype}{تاریخ برگزاری:}
+\newcommand{\eventdate}{۲۵ آبان ۱۴۰۵}
+\newcommand{\quiztime}{۱۵ دقیقه}
+
+\begin{document}
+\maketitle
+
+\question
+یک DFA طراحی کنید که الفبای آن $\Sigma = \{0, 1\}$ است و تمام رشته‌هایی را می‌پذیرد که تعداد رقم‌های ۱ در آن‌ها فرد باشد.
+
+\answerbox{3.5cm}
+
+% در صورت نیاز به نوشتن پاسخ تشریحی:
+% \solution
+% پاسخ تشریحی در این بخش قرار می‌گیرد.
+
+\question*{سؤال دوم: ویژگی‌های زبان‌های منظم}
+با فرض زبان $L = \{w \in \{a, b\}^* \mid |w| \ge 2\}$، به بخش‌های زیر پاسخ دهید:
+
+\begin{alphaparts}
+  \questionpart آیا این زبان منظم است؟ یک عبارت منظم معادل برای آن بنویسید.
+  \answerbox{2.5cm}
+  
+  \questionpart گرامر مستقل از متن یا خطی متناظر با این زبان را بنویسید.
+  \answerbox{2.5cm}
+\end{alphaparts}
+
+\end{document}
+
+% To compile via command line:
+% latexmk QUIZ.tex
+% Or:
+% xelatex -synctex=1 -interaction=nonstopmode -shell-escape QUIZ.tex
