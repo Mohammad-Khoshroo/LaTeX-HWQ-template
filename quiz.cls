@@ -9,6 +9,8 @@
 \DeclareOption{newpage}{\renewcommand\@opnewpage{1}}
 \newcommand\@oplargemargins{0}
 \DeclareOption{largemargins}{\renewcommand\@oplargemargins{1}}
+\newcommand\@opnostudentinfo{0}
+\DeclareOption{nostudentinfo}{\renewcommand\@opnostudentinfo{1}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions\relax
 
@@ -293,7 +295,23 @@
 
       {\large \ifdefined\eventdatetype\eventdatetype\else تاریخ برگزاری:\fi{} \ifdefined\eventdate\eventdate\fi}
     \end{center}
-    \vspace{0.2in}
+
+    \ifthenelse{\equal{\@opnostudentinfo}{0}}{%
+      \vspace{4mm}
+      \noindent
+      \begin{minipage}{\linewidth}
+        \raggedleft
+        \normalsize
+        \textbf{\ifdefined\quiztimelabel\quiztimelabel\else زمان پاسخگویی:\fi}%
+        \space
+        \ifdefined\quiztime\quiztime\else\ifdefined\eventtime\eventtime\fi\fi\par\vspace{2.5mm}%
+        \textbf{\ifdefined\studentnamelabel\studentnamelabel\else نام و نام خانوادگی:\fi}\par\vspace{2.5mm}%
+        \textbf{\ifdefined\studentidlabel\studentidlabel\else شماره دانشجویی:\fi}\par
+      \end{minipage}%
+      \par\vspace{3mm}%
+    }{%
+      \vspace{0.2in}%
+    }%
     \renewcommand{\headrulewidth}{0.4pt}
   }
 }{%
